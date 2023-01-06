@@ -1,4 +1,4 @@
-# List of Chrome Driver command line arguments
+# List of Chrome Driver command line Arguments
 
 Here is the list of Chrome Driver command line Arguments.
 
