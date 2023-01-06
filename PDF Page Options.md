@@ -64,4 +64,5 @@
 >     
 > - ```transferMode``` **[*EXPERIMENTAL* => This may be changed, moved or removed]**
 >     - **Type**: __str, optional__
->     - **Description**: __Return as stream. Allowed Values:__ ``ReturnAsBase64``__,__ ``ReturnAsStream``__.__
+>     - **Description**: __Return as stream. Allowed Values:__ ``ReturnAsBase64``__,__ ``ReturnAsStream``__. Defaults to ReturnAsBase64.__
+>     - **Pay Attention**: __At the moment the ``ReturnAsStream`` option doesn't work.__
