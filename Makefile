@@ -9,5 +9,10 @@ venv:
 	$(PYTHON) -m pip install -U git+https://github.com/uNickz/WebSite2PDF
 	@echo "Created venv with $$($(PYTHON) --version)"
 
-api:
+driver:
+	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+	sudo dpkg -i google-chrome-stable_current_amd64.deb
+	$(RM) google-chrome-stable_current_amd64.deb
+
+script:
 	cd Example/ && ../$(PYTHON) example.py

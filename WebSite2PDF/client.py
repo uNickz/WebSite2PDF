@@ -33,28 +33,29 @@ class Client:
         self.client: Driver = Driver()
         self.pdfOptions: dict = pdfOptions
         self.seleniumOptions: List[str] = seleniumOptions
-        self.delay = delay
+        self.delay: int = delay
 
     def pdf(self, url: Union[str, Iterable[str]], filename: Optional[Union[str, Iterable[str]]] = None, pdfOptions: Optional[dict] = None, seleniumOptions: Optional[List[str]] = None, delay: Optional[int] = 0) -> Union[bytes, Iterable[bytes], str, Iterable[str]]:
         __url = [url] if isinstance(url, str) else url
         if any([not isinstance(_, str) for _ in __url]):
             raise TypeError("You must pass an argument of type string or an iterable of strings.")
         
-        __pdfOptions = pdfOptions if pdfOptions else self.pdfOptions
-        __seleniumOptions = seleniumOptions if seleniumOptions else self.seleniumOptions
-        __delay = delay if delay else self.delay
+        __pdfOptions: dict = pdfOptions if pdfOptions else self.pdfOptions
+        __seleniumOptions: List[str] = seleniumOptions if seleniumOptions else self.seleniumOptions
+        __delay: int = delay if delay else self.delay
 
         __opts: Options = self.__FormatOptions(__seleniumOptions)
         self.client.start_client(__opts)
         if isinstance(url, str):
             self.client.connect(url)
+            __title: str = self.client.driver.title
             __resp: dict = self.client.send_DevTool("Page.printToPDF", __pdfOptions, __delay)["data"]
             self.client.stop_client()
             if isinstance(filename, list):
                 filename = filename[0]
             if not filename:
                 return base64.b64decode(__resp)
-            filename = filename.format(title = self.client.driver.title)
+            filename = filename.format(title = __title)
             __fn = filename + (".pdf" if not filename.lower().endswith(".pdf") else "")
             __fn = re.sub("(\/|\\|\?|%|\*|:|\||\"|<|>)", "", __fn)
             with open(__fn, "wb+") as file:
@@ -74,17 +75,18 @@ class Client:
         __gresp: List[str] = []
         for i, u in enumerate(url):
             self.client.connect(u)
+            __title: str = self.client.driver.title
             if i < len(filename):
                 if filename[i]:
-                    filename = filename.format(title = self.client.driver.title)
+                    filename[i] = filename[i].format(title = __title)
                     __fn = filename[i] + (".pdf" if not filename[i].lower().endswith(".pdf") else "")
                 else:
-                    __fn = self.client.driver.title + ".pdf"
+                    __fn = __title + ".pdf"
             else:
-                __fn = self.client.driver.title + ".pdf"
+                __fn = __title + ".pdf"
             __fn = re.sub("(\/|\\|\?|%|\*|:|\||\"|<|>)", "", __fn)
             with open(__fn, "wb+") as file:
-                file.write(base64.b64decode(__resp))
+                file.write(base64.b64decode(self.client.send_DevTool("Page.printToPDF", __pdfOptions, __delay)["data"]))
             __gresp += [os.path.abspath(__fn)]
         self.client.stop_client()
         return __gresp
