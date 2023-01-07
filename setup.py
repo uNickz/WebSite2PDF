@@ -40,6 +40,5 @@ setup(
     packages = find_packages(),
     install_requires = requires,
     zip_safe = False,
-    include_package_data = True,
-    universal = True,
+    include_package_data = True
 )
