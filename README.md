@@ -1,6 +1,6 @@
 <p align = "center">
     <a href = "https://github.com/uNickz/WebSite2PDF">
-        <img src = "./.github/graphics/GitHub-Banner-WebSite2PDF.png" width = "500px" alt = "WebSite2PDF Logo">
+        <img src = "https://raw.githubusercontent.com/uNickz/WebSite2PDF/main/.github/graphics/GitHub-Banner-WebSite2PDF.png" width = "500px" alt = "WebSite2PDF Logo">
     </a>
     <br />
     <a href="https://github.com/uNickz/WebSite2PDF/tree/main/Example">Examples</a>
