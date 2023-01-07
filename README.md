@@ -96,7 +96,7 @@ c = WebSite2PDF.Client()
 c.pdf(url, filename = "file_name.pdf", delay = 3)
 ```
 
-### Using global PDF Options
+### Using global [PDF Options](https://github.com/uNickz/WebSite2PDF/blob/main/PDF%20Page%20Options.md)
 
 ``` python
 import WebSite2PDF
@@ -114,7 +114,7 @@ c = WebSite2PDF.Client(
 c.pdf(url, filename = "file_name.pdf")
 ```
 
-### Using specific PDF Options for a PDF
+### Using specific [PDF Options](https://github.com/uNickz/WebSite2PDF/blob/main/PDF%20Page%20Options.md) for a PDF
 
 ``` python
 import WebSite2PDF
@@ -135,7 +135,7 @@ c.pdf(url, filename = "file_name.pdf", pdfOptions = {
 })
 ```
 
-### Using global Selenium ChromeDriver Options
+### Using global [Selenium ChromeDriver Options](https://github.com/uNickz/WebSite2PDF/blob/main/Selenium%20ChromeDriver%20Options.md)
 
 ``` python
 import WebSite2PDF
@@ -156,7 +156,7 @@ c = WebSite2PDF.Client(
 c.pdf(url, filename = "file_name.pdf")
 ```
 
-### Using specific Selenium ChromeDriver Options for a PDF
+### Using specific [Selenium ChromeDriver Options](https://github.com/uNickz/WebSite2PDF/blob/main/Selenium%20ChromeDriver%20Options.md) for a PDF
 
 ``` python
 import WebSite2PDF
