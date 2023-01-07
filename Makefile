@@ -10,4 +10,4 @@ venv:
 	@echo "Created venv with $$($(PYTHON) --version)"
 
 api:
-	cd example/ && ../$(PYTHON) example.py
+	cd Example/ && ../$(PYTHON) example.py
