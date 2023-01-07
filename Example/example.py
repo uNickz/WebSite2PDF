@@ -1,4 +1,4 @@
-import WebSite2PDF
+from .. import WebSite2PDF
 
 if __name__ == "__main__":
     c = WebSite2PDF.Client()
