@@ -39,4 +39,7 @@ setup(
     python_requires = ">=3.7",
     packages = find_packages(),
     install_requires = requires,
+    zip_safe = False,
+    include_package_data = True,
+    universal = True,
 )
