@@ -2,13 +2,13 @@ import re
 
 from setuptools import setup, find_packages
 
-with open("requirements.txt", encoding="utf-8") as r:
+with open("requirements.txt", encoding = "utf-8") as r:
     requires = [i.strip() for i in r]
 
-with open("WebSite2PDF/__init__.py", encoding="utf-8") as f:
+with open("WebSite2PDF/__init__.py", encoding = "utf-8") as f:
     version = re.findall(r"__version__ = \"(.+)\"", f.read())[0]
 
-with open("README.md", encoding="utf-8") as f:
+with open("README.md", encoding = "utf-8") as f:
     readme = f.read()
 
 setup(
