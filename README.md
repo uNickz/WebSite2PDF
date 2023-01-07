@@ -1,3 +1,19 @@
+<p align = "center">
+    <a href = "https://github.com/uNickz/WebSite2PDF">
+        <img src = "./.github/graphics/GitHub-Banner-WebSite2PDF.png" alt = "WebSite2PDF Logo">
+    </a>
+    <br />
+    <a href="https://github.com/uNickz/WebSite2PDF/tree/main/Example">Examples</a>
+    •
+    <a href="https://github.com/uNickz/WebSite2PDF/blob/main/README.md">Documentation</a>
+    •
+    <a href="https://pypi.org/project/WebSite2PDF/">PyPi</a>
+    •
+    <a href="https://t.me/uNickzProjects">News</a>
+    •
+    <a href="https://github.com/uNickz/WebSite2PDF/discussions">Chat</a>
+</p>
+
 # WebSite2PDF
 > Simple and Fast Python framework to convert HTML files or Web Site to PDF
 
@@ -14,8 +30,16 @@ pip3 install git+https://github.com/uNickz/WebSite2PDF
 ### Installing with python
 
 ``` bash
+python3 -m pip install WebSite2PDF
+```
+or
+``` bash
 python3 -m pip install git+https://github.com/uNickz/WebSite2PDF
 ```
+
+### Dependencies
+
+ - [Selenium Chrome WebDriver](https://chromedriver.chromium.org/downloads) (If [Chrome](https://www.google.com/chrome/) is installed on the machine you won't need to install the chrome driver)
 
 ## Example
 
