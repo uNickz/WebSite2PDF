@@ -1,4 +1,5 @@
 import requests
+import selenium
 import logging
 import json
 import os
@@ -26,7 +27,10 @@ class Driver:
             raise ClientAlreadyStarted
         
         if install_driver:
-            self.driver = webdriver.Chrome(executable_path = ChromeDriverManager().install(), options = options, service = service)
+            if tuple(map(int, selenium.__version__.split("."))) >= (4, 10, 0):
+                self.driver = webdriver.Chrome(options = options, service = Service(executable_path = ChromeDriverManager().install()))
+            else:
+                self.driver = webdriver.Chrome(executable_path = ChromeDriverManager().install(), options = options, service = service)
         else:
             self.driver = webdriver.Chrome(options = options, service = service)
     
