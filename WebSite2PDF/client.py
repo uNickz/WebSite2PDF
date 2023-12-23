@@ -1,5 +1,6 @@
 import logging
 import base64
+import time
 import os
 import re
 
@@ -11,7 +12,6 @@ from .driver import Driver
 log = logging.getLogger(__name__)
 
 class Client:
-
     def __init__(
         self,
         pdfOptions: Optional[dict] = {
@@ -28,6 +28,9 @@ class Client:
             "--instant-process",
             "--fast",
             "--fast-start",
+            "--disable-infobars",
+            "--disable-extensions",
+            "--disable-popup-blocking",
         ],
         delay: Optional[int] = 0,
     ) -> None:
@@ -40,7 +43,7 @@ class Client:
         __url = [url] if isinstance(url, str) else url
         if any([not isinstance(_, str) for _ in __url]):
             raise TypeError("You must pass an argument of type string or an iterable of strings.")
-        
+
         __pdfOptions: dict = pdfOptions if pdfOptions else self.pdfOptions
         __seleniumOptions: List[str] = seleniumOptions if seleniumOptions else self.seleniumOptions
         __delay: int = delay if delay else self.delay
@@ -50,27 +53,56 @@ class Client:
         if isinstance(url, str):
             self.client.connect(url)
             __title: str = self.client.driver.title
-            __resp: dict = self.client.send_DevTool("Page.printToPDF", __pdfOptions, __delay)["data"]
+
+            if self.client.browser == "Chrome":
+                __resp: dict = self.client.send_DevTool("Page.printToPDF", __pdfOptions, __delay)["data"]
+                self.client.stop_client()
+                if isinstance(filename, list):
+                    filename = filename[0]
+                if not filename:
+                    return base64.b64decode(__resp)
+                filename = filename.format(title = __title)
+                __fn = filename + (".pdf" if not filename.lower().endswith(".pdf") else "")
+                __fn = re.sub("(\/|\\|\?|%|\*|:|\||\"|<|>)", "", __fn)
+                with open(__fn, "wb+") as file:
+                    file.write(base64.b64decode(__resp))
+                return os.path.abspath(__fn)
+
+            self.client.driver.execute_script("window.print();")
+            __file_path = os.path.join(os.getcwd(), "WebSite2PDF.pdf")
+            while not os.path.isfile(__file_path):
+                time.sleep(0.1)
             self.client.stop_client()
             if isinstance(filename, list):
                 filename = filename[0]
             if not filename:
-                return base64.b64decode(__resp)
+                with open(__file_path, "rb") as file:
+                    __content = file.read()
+                os.remove(__file_path)
+                return __content
             filename = filename.format(title = __title)
             __fn = filename + (".pdf" if not filename.lower().endswith(".pdf") else "")
             __fn = re.sub("(\/|\\|\?|%|\*|:|\||\"|<|>)", "", __fn)
-            with open(__fn, "wb+") as file:
-                file.write(base64.b64decode(__resp))
+            os.rename(__file_path, __fn)
             return os.path.abspath(__fn)
-        
+
         if not filename:
             __gresp: List[bytes] = []
             for u in url:
                 self.client.connect(u)
-                __gresp += [base64.b64decode(self.client.send_DevTool("Page.printToPDF", __pdfOptions, __delay)["data"])]
+                if self.client.browser == "Chrome":
+                    __gresp += [base64.b64decode(self.client.send_DevTool("Page.printToPDF", __pdfOptions, __delay)["data"])]
+                else:
+                    self.client.driver.execute_script("window.print();")
+                    __file_path = os.path.join(os.getcwd(), "WebSite2PDF.pdf")
+                    while not os.path.isfile(__file_path):
+                        time.sleep(0.1)
+                    with open(__file_path, "rb") as file:
+                        __gresp += [file.read()]
+                    os.remove(__file_path)
             self.client.stop_client()
             return __gresp
-        
+
         if isinstance(filename, str):
             filename = [filename]
         __gresp: List[str] = []
@@ -86,9 +118,17 @@ class Client:
             else:
                 __fn = __title + ".pdf"
             __fn = re.sub("(\/|\\|\?|%|\*|:|\||\"|<|>)", "", __fn)
-            with open(__fn, "wb+") as file:
-                file.write(base64.b64decode(self.client.send_DevTool("Page.printToPDF", __pdfOptions, __delay)["data"]))
-            __gresp += [os.path.abspath(__fn)]
+            if self.client.browser == "Chrome":
+                with open(__fn, "wb+") as file:
+                    file.write(base64.b64decode(self.client.send_DevTool("Page.printToPDF", __pdfOptions, __delay)["data"]))
+                __gresp += [os.path.abspath(__fn)]
+            else:
+                self.client.driver.execute_script("window.print();")
+                __file_path = os.path.join(os.getcwd(), "WebSite2PDF.pdf")
+                while not os.path.isfile(__file_path):
+                    time.sleep(0.1)
+                os.rename(__file_path, __fn)
+                __gresp += [os.path.abspath(__fn)]
         self.client.stop_client()
         return __gresp
 
@@ -99,4 +139,21 @@ class Client:
             __chrome_opts.add_argument(_)
             __firefox_opts.add_argument(_)
         __chrome_opts.add_experimental_option("prefs", {"profile.managed_default_content_settings.images" : 2})
+        __firefox_opts.set_preference("browser.aboutConfig.showWarning", False)
+        __firefox_opts.set_preference("print.save_as_pdf.links.enabled", True)
+        __firefox_opts.set_preference("services.sync.prefs.sync.browser.download.manager.showWhenStarting", False)
+        __firefox_opts.set_preference("pdfjs.disabled", False)
+        __firefox_opts.set_preference("print.always_print_silent", True)
+        __firefox_opts.set_preference("print.show_print_progress", False)
+        __firefox_opts.set_preference("browser.download.show_plugins_in_list", False)
+        __firefox_opts.set_preference("browser.download.folderList", 2)
+        __firefox_opts.set_preference("browser.download.manager.showWhenStarting", False)
+        __firefox_opts.set_preference("print_printer", "Microsoft Print to PDF")
+        __firefox_opts.set_preference("print.printer_Microsoft_Print_to_PDF.print_to_file", True)
+        __firefox_opts.set_preference("print.printer_Microsoft_Print_to_PDF.print_bgcolor", True)
+        __firefox_opts.set_preference("print.printer_Microsoft_Print_to_PDF.print_shrink_to_fit", True)
+        __firefox_opts.set_preference("print.save_as_pdf.internal_destinations.enabled", True)
+        __firefox_opts.set_preference("print.printer_Microsoft_Print_to_PDF.print_bgimages", True)
+        __firefox_opts.set_preference("print.printer_Microsoft_Print_to_PDF.show_print_progress", True)
+        __firefox_opts.set_preference("print.printer_Microsoft_Print_to_PDF.print_to_filename", os.path.join(os.getcwd(), "WebSite2PDF.pdf"))
         return (__chrome_opts, __firefox_opts)

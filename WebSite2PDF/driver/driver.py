@@ -14,8 +14,8 @@ from webdriver_manager.firefox import GeckoDriverManager
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium import webdriver
 from typing import Optional, Tuple
+from selenium import webdriver
 
 from ..errors import ClientAlreadyStarted, ClientAlreadyStopped, InvalidUrl, RequestFailed, InvalidFile
 
@@ -24,6 +24,7 @@ log = logging.getLogger(__name__)
 class Driver:
     def __init__(self) -> None:
         self.driver: webdriver.Chrome = None
+        self.browser = "Chrome"
 
     def start_client(self, options: Optional[Tuple[ChromeOptions, FireFoxOptions]] = None, service: Optional[Tuple[FireFoxService, ChromeService]] = None, install_driver: bool = True) -> None:
         if self.driver:
@@ -34,16 +35,19 @@ class Driver:
                 try:
                     self.driver = webdriver.Chrome(options = options[0] if options else None, service = ChromeService(executable_path = ChromeDriverManager().install()))
                 except AttributeError:
+                    self.browser = "FireFox"
                     self.driver = webdriver.Firefox(options = options[1] if options else None, service = FireFoxService(executable_path = GeckoDriverManager().install()))
             else:
                 try:
                     self.driver = webdriver.Chrome(executable_path = ChromeDriverManager().install(), options = options[0] if options else None, service = service[0] if service else None)
                 except AttributeError:
+                    self.browser = "FireFox"
                     self.driver = webdriver.Firefox(executable_path = GeckoDriverManager().install(), options = options[1] if options else None, service = service[1] if service else None)
         else:
             try:
                 self.driver = webdriver.Chrome(options = options[0] if options else None, service = service[0] if service else None)
             except AttributeError:
+                self.browser = "FireFox"
                 self.driver = webdriver.Firefox(options = options[1] if options else None, service = service[1] if service else None)
     
     def stop_client(self) -> None:
