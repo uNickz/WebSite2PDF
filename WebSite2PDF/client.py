@@ -70,7 +70,7 @@ class Client:
 
             self.client.driver.execute_script("window.print();")
             __file_path = os.path.join(os.getcwd(), "WebSite2PDF.pdf")
-            while not os.path.isfile(__file_path):
+            while not os.path.isfile(__file_path) or os.path.getsize(__file_path) == 0:
                 time.sleep(0.1)
             self.client.stop_client()
             if isinstance(filename, list):
@@ -95,7 +95,7 @@ class Client:
                 else:
                     self.client.driver.execute_script("window.print();")
                     __file_path = os.path.join(os.getcwd(), "WebSite2PDF.pdf")
-                    while not os.path.isfile(__file_path):
+                    while not os.path.isfile(__file_path) or os.path.getsize(__file_path) == 0:
                         time.sleep(0.1)
                     with open(__file_path, "rb") as file:
                         __gresp += [file.read()]
@@ -125,7 +125,7 @@ class Client:
             else:
                 self.client.driver.execute_script("window.print();")
                 __file_path = os.path.join(os.getcwd(), "WebSite2PDF.pdf")
-                while not os.path.isfile(__file_path):
+                while not os.path.isfile(__file_path) or os.path.getsize(__file_path) == 0:
                     time.sleep(0.1)
                 os.rename(__file_path, __fn)
                 __gresp += [os.path.abspath(__fn)]
