@@ -6,6 +6,7 @@ import os
 
 from selenium.webdriver.support.expected_conditions import staleness_of
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
@@ -25,14 +26,23 @@ class Driver:
     def start_client(self, options: Optional[Options] = None, service: Optional[Service] = None, install_driver: bool = True) -> None:
         if self.driver:
             raise ClientAlreadyStarted
-        
+
         if install_driver:
             if tuple(map(int, selenium.__version__.split("."))) >= (4, 10, 0):
-                self.driver = webdriver.Chrome(options = options, service = Service(executable_path = ChromeDriverManager().install()))
+                try:
+                    self.driver = webdriver.Chrome(options = options, service = Service(executable_path = ChromeDriverManager().install()))
+                except AttributeError:
+                    self.driver = webdriver.Firefox(options = options, service = Service(executable_path = GeckoDriverManager().install()))
             else:
-                self.driver = webdriver.Chrome(executable_path = ChromeDriverManager().install(), options = options, service = service)
+                try:
+                    self.driver = webdriver.Chrome(executable_path = ChromeDriverManager().install(), options = options, service = service)
+                except AttributeError:
+                    self.driver = webdriver.Firefox(executable_path = GeckoDriverManager().install(), options = options, service = service)
         else:
-            self.driver = webdriver.Chrome(options = options, service = service)
+            try:
+                self.driver = webdriver.Chrome(options = options, service = service)
+            except AttributeError:
+                self.driver = webdriver.Firefox(options = options, service = service)
     
     def stop_client(self) -> None:
         if not self.driver:
