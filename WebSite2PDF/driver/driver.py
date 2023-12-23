@@ -4,16 +4,18 @@ import logging
 import json
 import os
 
+from selenium.webdriver.firefox.options import Options as FireFoxOptions
+from selenium.webdriver.firefox.service import Service as FireFoxService
 from selenium.webdriver.support.expected_conditions import staleness_of
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-from typing import Optional
+from typing import Optional, Tuple
 
 from ..errors import ClientAlreadyStarted, ClientAlreadyStopped, InvalidUrl, RequestFailed, InvalidFile
 
@@ -23,26 +25,26 @@ class Driver:
     def __init__(self) -> None:
         self.driver: webdriver.Chrome = None
 
-    def start_client(self, options: Optional[Options] = None, service: Optional[Service] = None, install_driver: bool = True) -> None:
+    def start_client(self, options: Optional[Tuple[ChromeOptions, FireFoxOptions]] = None, service: Optional[Tuple[FireFoxService, ChromeService]] = None, install_driver: bool = True) -> None:
         if self.driver:
             raise ClientAlreadyStarted
 
         if install_driver:
             if tuple(map(int, selenium.__version__.split("."))) >= (4, 10, 0):
                 try:
-                    self.driver = webdriver.Chrome(options = options, service = Service(executable_path = ChromeDriverManager().install()))
+                    self.driver = webdriver.Chrome(options = options[0] if options else None, service = ChromeService(executable_path = ChromeDriverManager().install()))
                 except AttributeError:
-                    self.driver = webdriver.Firefox(options = options, service = Service(executable_path = GeckoDriverManager().install()))
+                    self.driver = webdriver.Firefox(options = options[1] if options else None, service = FireFoxService(executable_path = GeckoDriverManager().install()))
             else:
                 try:
-                    self.driver = webdriver.Chrome(executable_path = ChromeDriverManager().install(), options = options, service = service)
+                    self.driver = webdriver.Chrome(executable_path = ChromeDriverManager().install(), options = options[0] if options else None, service = service[0] if service else None)
                 except AttributeError:
-                    self.driver = webdriver.Firefox(executable_path = GeckoDriverManager().install(), options = options, service = service)
+                    self.driver = webdriver.Firefox(executable_path = GeckoDriverManager().install(), options = options[1] if options else None, service = service[1] if service else None)
         else:
             try:
-                self.driver = webdriver.Chrome(options = options, service = service)
+                self.driver = webdriver.Chrome(options = options[0] if options else None, service = service[0] if service else None)
             except AttributeError:
-                self.driver = webdriver.Firefox(options = options, service = service)
+                self.driver = webdriver.Firefox(options = options[1] if options else None, service = service[1] if service else None)
     
     def stop_client(self) -> None:
         if not self.driver:

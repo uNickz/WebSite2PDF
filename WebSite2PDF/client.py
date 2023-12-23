@@ -3,8 +3,9 @@ import base64
 import os
 import re
 
-from selenium.webdriver.chrome.options import Options
-from typing import Optional, Iterable, Union, List
+from selenium.webdriver.firefox.options import Options as FireFoxOptions
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from typing import Optional, Iterable, Union, List, Tuple
 from .driver import Driver
 
 log = logging.getLogger(__name__)
@@ -44,7 +45,7 @@ class Client:
         __seleniumOptions: List[str] = seleniumOptions if seleniumOptions else self.seleniumOptions
         __delay: int = delay if delay else self.delay
 
-        __opts: Options = self.__FormatOptions(__seleniumOptions)
+        __opts: Tuple[ChromeOptions, FireFoxOptions] = self.__FormatOptions(__seleniumOptions)
         self.client.start_client(__opts)
         if isinstance(url, str):
             self.client.connect(url)
@@ -91,9 +92,11 @@ class Client:
         self.client.stop_client()
         return __gresp
 
-    def __FormatOptions(self, seleniumOptions: List[str]) -> Options:
-        __opts = Options()
+    def __FormatOptions(self, seleniumOptions: List[str]) -> Tuple[ChromeOptions, FireFoxOptions]:
+        __chrome_opts = ChromeOptions()
+        __firefox_opts = FireFoxOptions()
         for _ in seleniumOptions:
-            __opts.add_argument(_)
-        __opts.add_experimental_option("prefs", {"profile.managed_default_content_settings.images" : 2})
-        return __opts
+            __chrome_opts.add_argument(_)
+            __firefox_opts.add_argument(_)
+        __chrome_opts.add_experimental_option("prefs", {"profile.managed_default_content_settings.images" : 2})
+        return (__chrome_opts, __firefox_opts)
