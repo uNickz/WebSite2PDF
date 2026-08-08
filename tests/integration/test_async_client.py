@@ -1,8 +1,8 @@
-import asyncio
+from pathlib import Path
 
 import pytest
 
-from website2pdf import AsyncClient, InvalidTargetError, PdfOptions
+from website2pdf import AsyncClient, InvalidTargetError, PdfOptions, RenderOptions
 
 from .conftest import PDF_MAGIC, page_count
 
@@ -65,21 +65,33 @@ class TestAsyncConvertMany:
             "Simple Fixture Page (2).pdf",
         ]
 
-    async def test_renders_concurrently(self, http_server):
-        # Four pages at concurrency 4 should not take four times one page.
-        url = f"{http_server}/simple.html"
-        async with AsyncClient(concurrency=4) as client:
-            await client.convert(url)  # warm the browser up first
+    async def test_renders_pages_at_the_same_time(self, http_server, monkeypatch):
+        # Observing overlap directly, rather than timing the batch: wall-clock
+        # assertions turn flaky the moment the runner is busy.
+        client = AsyncClient(concurrency=3)
+        original = client._render
+        active = 0
+        peak = 0
 
-            start = asyncio.get_running_loop().time()
-            await client.convert(url)
-            sequential = asyncio.get_running_loop().time() - start
+        async def tracked(
+            target: str | Path,
+            pdf_options: PdfOptions | None,
+            render_options: RenderOptions | None,
+        ) -> tuple[bytes, str]:
+            nonlocal active, peak
+            active += 1
+            peak = max(peak, active)
+            try:
+                return await original(target, pdf_options, render_options)
+            finally:
+                active -= 1
 
-            start = asyncio.get_running_loop().time()
-            await client.convert_many([url] * 4)
-            concurrent = asyncio.get_running_loop().time() - start
+        monkeypatch.setattr(client, "_render", tracked)
+        async with client:
+            await client.convert_many([f"{http_server}/simple.html"] * 6)
 
-        assert concurrent < sequential * 4
+        assert peak > 1, "pages were rendered one after another"
+        assert peak <= 3, "the concurrency limit was not honoured"
 
 
 class TestAsyncLifecycle:
