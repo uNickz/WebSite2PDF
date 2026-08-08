@@ -1,13 +1,24 @@
-<p align = "center">
-    <a href = "https://github.com/uNickz/WebSite2PDF">
-        <img src = "https://raw.githubusercontent.com/uNickz/WebSite2PDF/main/.github/graphics/GitHub-Banner-WebSite2PDF.png" width = "500px" alt = "WebSite2PDF Logo">
+<p align="center">
+    <a href="https://github.com/uNickz/WebSite2PDF">
+        <img src="https://raw.githubusercontent.com/uNickz/WebSite2PDF/main/.github/graphics/GitHub-Banner-WebSite2PDF.png" width="500px" alt="WebSite2PDF">
     </a>
-    <br />
-    <a href="https://github.com/uNickz/WebSite2PDF/tree/main/Example">Examples</a>
+</p>
+
+<p align="center">
+    <a href="https://pypi.org/project/website2pdf/"><img src="https://img.shields.io/pypi/v/website2pdf.svg" alt="PyPI"></a>
+    <a href="https://pypi.org/project/website2pdf/"><img src="https://img.shields.io/pypi/pyversions/website2pdf.svg" alt="Python versions"></a>
+    <a href="https://github.com/uNickz/WebSite2PDF/actions/workflows/ci.yml"><img src="https://github.com/uNickz/WebSite2PDF/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+    <a href="https://github.com/uNickz/WebSite2PDF/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/website2pdf.svg" alt="MIT licence"></a>
+    <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff"></a>
+    <a href="https://mypy-lang.org/"><img src="https://www.mypy-lang.org/static/mypy_badge.svg" alt="Checked with mypy"></a>
+</p>
+
+<p align="center">
+    <a href="https://unickz.github.io/WebSite2PDF/">Documentation</a>
     •
-    <a href="https://github.com/uNickz/WebSite2PDF/blob/main/README.md">Documentation</a>
+    <a href="https://pypi.org/project/website2pdf/">PyPI</a>
     •
-    <a href="https://pypi.org/project/WebSite2PDF/">PyPi</a>
+    <a href="https://github.com/uNickz/WebSite2PDF/blob/main/CHANGELOG.md">Changelog</a>
     •
     <a href="https://t.me/uNickzProjects">News</a>
     •
@@ -15,194 +26,211 @@
 </p>
 
 # WebSite2PDF
-> Simple and Fast Python framework to convert HTML files or Web Site to PDF
 
-### Installing with pip
+Render web pages and local HTML files to PDF, from Python or from the shell.
+Fully typed, async-capable, and driven by headless Chromium through
+[Playwright](https://playwright.dev/python/).
 
-``` bash
-pip3 install WebSite2PDF
-```
-or
-``` bash
-pip3 install git+https://github.com/uNickz/WebSite2PDF
-```
+```python
+from website2pdf import Client
 
-### Installing with python
-
-``` bash
-python3 -m pip install WebSite2PDF
-```
-or
-``` bash
-python3 -m pip install git+https://github.com/uNickz/WebSite2PDF
+with Client() as client:
+    client.convert("https://example.com", "example.pdf")
 ```
 
-### Dependencies
+## Installation
 
- - [Selenium Chrome WebDriver](https://chromedriver.chromium.org/downloads) (If [Chrome](https://www.google.com/chrome/) is installed on the machine you won't need to install the chrome driver)
-
-## Example
-
-### Using a url
-
-``` python
-import WebSite2PDF
-
-url = "https://pypi.org"
-
-c = WebSite2PDF.Client()
-with open("file_name.pdf", "wb+") as file:
-    file.write(c.pdf(url))
-```
-or
-``` python
-import WebSite2PDF
-
-url = "https://pypi.org"
-
-c = WebSite2PDF.Client()
-c.pdf(url, filename="file_name.pdf")
+```bash
+pip install website2pdf
 ```
 
-### Using a file HTML
+Then download the browser Playwright manages. **This step is required** — the
+library has nothing to render with until it has run:
 
-``` python
-import WebSite2PDF
-
-file_path = "C:\Users\uNickz\index.html"
-
-c = WebSite2PDF.Client()
-with open("file_name.pdf", "wb+") as file:
-    file.write(c.pdf(f"file:///{file_path}"))
-```
-or
-``` python
-import WebSite2PDF
-
-file_path = "C:\Users\uNickz\index.html"
-
-c = WebSite2PDF.Client()
-c.pdf(f"file:///{file_path}", filename = "file_name.pdf")
+```bash
+playwright install chromium
 ```
 
-### Using multiple urls or files HTML
+For the command line, install the extra as well:
 
-``` python
-import WebSite2PDF
-
-urls_or_path = ["https://pypi.org", "file:///C:\Users\uNickz\index.html", "https://github.com/"]
-
-c = WebSite2PDF.Client()
-c.pdf(urls_or_path, filename = ["pypi.pdf", "index.pdf", "github.pdf"])
-```
-or
-``` python
-import WebSite2PDF
-
-urls_or_path = ["https://pypi.org", "file:///C:\Users\uNickz\index.html", "https://github.com/"]
-file_name = ["pypi.pdf", "index.pdf", "github.pdf"]
-
-c = WebSite2PDF.Client()
-data = c.pdf(urls_or_path)
-for name, data in zip(name, data):
-    with open(name, "wb+") as file:
-        file.write(data)
+```bash
+pip install "website2pdf[cli]"
 ```
 
-### Using a delay (in seconds) before create PDF
+Python 3.10 or newer. The browser download is roughly 150 MB and is shared by
+every project on the machine.
 
-``` python
-import WebSite2PDF
+## Usage
 
-url = "https://pypi.org"
+### One page
 
-c = WebSite2PDF.Client()
-c.pdf(url, filename="file_name.pdf", delay=3)
+```python
+from website2pdf import Client
+
+with Client() as client:
+    # Get the bytes back...
+    data = client.convert("https://example.com")
+
+    # ...or write a file, and get its path.
+    path = client.convert("https://example.com", "report.pdf")
+
+    # Name the file after the page title.
+    path = client.convert("https://example.com", "{title}.pdf")
 ```
 
-### Using global [PDF Options](https://github.com/uNickz/WebSite2PDF/blob/main/PDF%20Page%20Options.md)
+Local files work the same way, as a path or a `file://` URL:
 
-``` python
-import WebSite2PDF
+```python
+from pathlib import Path
 
-url = "https://pypi.org"
+client.convert(Path("invoice.html"), "invoice.pdf")
+```
 
-c = WebSite2PDF.Client(
-    pdfOptions = {
-        "landscape" = True,
-        "displayHeaderFooter": True,
-        "printBackground": True,
-        "preferCSSPageSize": True,
-    }
+### Many pages
+
+```python
+with Client() as client:
+    paths = client.convert_many(
+        ["https://example.com", "https://example.org"],
+        "out/",
+    )
+```
+
+Pages that share a title do not overwrite each other: the second file becomes
+`Title (2).pdf`.
+
+### Concurrently
+
+`AsyncClient` renders several pages at once in independent browser contexts,
+sharing a single browser process.
+
+```python
+import asyncio
+
+from website2pdf import AsyncClient
+
+
+async def main() -> None:
+    async with AsyncClient(concurrency=8) as client:
+        await client.convert_many(urls, "out/")
+
+
+asyncio.run(main())
+```
+
+### Options
+
+Three immutable option objects, each covering one concern. Set them on the
+client as defaults, override them per call.
+
+```python
+from website2pdf import BrowserOptions, Client, Margin, PdfOptions, RenderOptions
+
+with Client(
+    pdf_options=PdfOptions(paper_format="A4", margin=Margin.uniform("1cm")),
+    render_options=RenderOptions(wait_until="networkidle"),
+    browser_options=BrowserOptions(user_agent="my-crawler/1.0"),
+) as client:
+    client.convert("https://example.com", "default.pdf")
+    client.convert(
+        "https://example.com",
+        "landscape.pdf",
+        pdf_options=PdfOptions(landscape=True, print_background=False),
+    )
+```
+
+A page that fills itself in after loading needs an explicit wait:
+
+```python
+client.convert(
+    "https://example.com",
+    "chart.pdf",
+    render_options=RenderOptions(wait_for_selector="#chart-ready"),
 )
-c.pdf(url, filename = "file_name.pdf")
 ```
 
-### Using specific [PDF Options](https://github.com/uNickz/WebSite2PDF/blob/main/PDF%20Page%20Options.md) for a PDF
+Chromium prints with `print` media by default. To reproduce what a visitor
+sees on screen:
 
-``` python
-import WebSite2PDF
-
-url = "https://pypi.org"
-
-c = WebSite2PDF.Client(
-    pdfOptions = {
-        "landscape" = True,
-        "displayHeaderFooter": True,
-        "printBackground": True,
-        "preferCSSPageSize": True,
-    }
-)
-c.pdf(url, filename = "file_name.pdf", pdfOptions = {
-    "landscape" = False,
-    "displayHeaderFooter": True,
-})
+```python
+render_options = RenderOptions(emulate_media="screen")
 ```
 
-### Using global [Selenium ChromeDriver Options](https://github.com/uNickz/WebSite2PDF/blob/main/Selenium%20ChromeDriver%20Options.md)
+The full reference lives in the [options
+documentation](https://unickz.github.io/WebSite2PDF/options/).
 
-``` python
-import WebSite2PDF
+### Command line
 
-url = "https://pypi.org"
-
-c = WebSite2PDF.Client(
-    pdfOptions = {
-        "landscape" = True,
-        "displayHeaderFooter": True,
-        "printBackground": True,
-        "preferCSSPageSize": True,
-    }, seleniumOptions = [
-        "--no-sandbox",
-        "--headless",
-    ]
-)
-c.pdf(url, filename = "file_name.pdf")
+```bash
+website2pdf https://example.com -o report.pdf
+website2pdf https://example.com https://example.org -o out/
+website2pdf https://example.com --format A5 --landscape --margin 1cm
+website2pdf https://example.com -o - > report.pdf          # straight to stdout
+cat urls.txt | website2pdf - -o out/ --concurrency 8        # one URL per line
 ```
 
-### Using specific [Selenium ChromeDriver Options](https://github.com/uNickz/WebSite2PDF/blob/main/Selenium%20ChromeDriver%20Options.md) for a PDF
+`website2pdf --help` lists every option.
 
-``` python
-import WebSite2PDF
+## Errors
 
-url = "https://pypi.org"
+Everything the library raises derives from `WebSite2PDFError`, so one `except`
+covers it:
 
-c = WebSite2PDF.Client(
-    pdfOptions = {
-        "landscape" = True,
-        "displayHeaderFooter": True,
-        "printBackground": True,
-        "preferCSSPageSize": True,
-    }, seleniumOptions = [
-        "--no-sandbox",
-        "--headless",
-    ]
-)
-c.pdf(url, filename = "file_name.pdf", pdfOptions = {
-        "landscape" = False,
-        "displayHeaderFooter": True,
-    }, seleniumOptions = [
-        "--no-sandbox",
-        "--disable-gpu",
-])
+```python
+from website2pdf import BrowserNotInstalledError, NavigationError, WebSite2PDFError
+
+try:
+    client.convert(url, "out.pdf")
+except BrowserNotInstalledError:
+    ...  # tells you to run `playwright install chromium`
+except NavigationError:
+    ...  # the page did not load in time
+except WebSite2PDFError:
+    ...  # anything else from this library
 ```
+
+## Notes
+
+`Client` runs Playwright's synchronous driver on the calling thread, which
+means `asyncio.run()` cannot start on that thread while a client is open. In an
+asyncio program, use `AsyncClient`. Several `Client` instances on one thread are
+fine — they share one reference-counted driver.
+
+PDF rendering is Chromium-only: it is the only engine that exposes a print-to-PDF
+command.
+
+## Migrating from 0.x
+
+Version 1.0 is a rewrite with a new import name and a new API. Nothing from 0.x
+carries over unchanged.
+
+| 0.x | 1.0 |
+| --- | --- |
+| `import WebSite2PDF` | `import website2pdf` |
+| `c.pdf(url)` | `c.convert(url)` |
+| `c.pdf(url, filename="x.pdf")` | `c.convert(url, "x.pdf")` |
+| `c.pdf([urls], filename=[names])` | `c.convert_many(urls, "out/")` |
+| `pdfOptions={"landscape": True}` | `pdf_options=PdfOptions(landscape=True)` |
+| `seleniumOptions=["--no-sandbox"]` | `browser_options=BrowserOptions(args=("--no-sandbox",))` |
+| `delay=3` | `render_options=RenderOptions(wait_until="networkidle")` |
+| `"paperWidth"` / `"marginTop"` … | `width=` / `Margin(top=...)`, CSS units |
+| Firefox fallback | removed; Chromium only |
+
+`Client` is now a context manager, and `convert()` returns `bytes` when you omit
+the destination and a `Path` when you give one — never a union of four types.
+The [migration
+guide](https://unickz.github.io/WebSite2PDF/migration/) walks through it.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). In short:
+
+```bash
+uv sync --all-extras --all-groups
+uv run playwright install chromium
+uv run pytest
+```
+
+## Licence
+
+[MIT](LICENSE).

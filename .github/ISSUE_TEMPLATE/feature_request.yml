@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest something the library should be able to do
+labels: ["enhancement"]
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: >
+        What are you trying to do that is awkward or impossible today? Describe
+        the situation rather than the solution — it often turns out there is a
+        better fit than the first idea.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you have in mind
+      description: An API sketch or a command line, if you have one.
+      render: python
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you tried instead
+      description: Workarounds you are using now, and why they fall short.
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: >
+            I understand PDF rendering is Chromium-only, because no other engine
+            exposes a print-to-PDF command
