@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Media Fixture</title>
+    <style>
+      /* Chromium prints with print media unless told otherwise. */
+      .screen-only {
+        display: none;
+      }
+      .print-only {
+        display: block;
+      }
+      @media screen {
+        .screen-only {
+          display: block;
+        }
+        .print-only {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <p class="screen-only">SCREENMARKER</p>
+    <p class="print-only">PRINTMARKER</p>
+  </body>
+</html>

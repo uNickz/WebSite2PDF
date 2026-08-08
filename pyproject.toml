@@ -193,6 +193,9 @@ filterwarnings = ["error"]
 [tool.coverage.run]
 source = ["website2pdf"]
 branch = true
+# Playwright's sync API switches greenlets on every call; without this the
+# tracer is lost at the first one and the client looks half untested.
+concurrency = ["thread", "greenlet"]
 
 [tool.coverage.report]
 fail_under = 85

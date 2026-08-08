@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Deferred Fixture</title>
+  </head>
+  <body>
+    <p>IMMEDIATEMARKER</p>
+    <script>
+      // Appears well after the load event, so a naive conversion misses it.
+      setTimeout(function () {
+        var late = document.createElement("p");
+        late.id = "late";
+        late.textContent = "DEFERREDMARKER";
+        document.body.appendChild(late);
+      }, 400);
+    </script>
+  </body>
+</html>
