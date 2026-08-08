@@ -12,7 +12,7 @@ version = "1.0.0.dev0"
 description = "Fast, typed Python library and CLI to render web pages and local HTML files to PDF."
 readme = "README.md"
 requires-python = ">=3.10"
-license = "LGPL-3.0-or-later"
+license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "uNickz", email = "unickz.dev@gmail.com" }]
 maintainers = [{ name = "uNickz", email = "unickz.dev@gmail.com" }]
