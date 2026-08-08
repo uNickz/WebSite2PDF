@@ -37,9 +37,8 @@ dependencies = ["playwright>=1.45"]
 [project.optional-dependencies]
 cli = ["typer>=0.12"]
 
-# Enabled in phase 3, once the CLI module exists.
-# [project.scripts]
-# website2pdf = "website2pdf.__main__:main"
+[project.scripts]
+website2pdf = "website2pdf.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/uNickz/WebSite2PDF"
@@ -139,7 +138,12 @@ ignore = [
     "S101",    # assert is the point
     "SLF001",  # tests may poke at private members
 ]
-"src/website2pdf/__main__.py" = ["T20"] # the CLI is allowed to print
+"src/website2pdf/__main__.py" = [
+    "PLR0913", # a CLI command legitimately has one parameter per option
+    "PLR0917", # ditto: Typer declares options as parameters
+    "T20",     # the CLI is allowed to print
+    "TC",      # Typer resolves annotations at runtime, so they cannot be deferred
+]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
