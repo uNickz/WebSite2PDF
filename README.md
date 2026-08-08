@@ -61,7 +61,7 @@ import WebSite2PDF
 url = "https://pypi.org"
 
 c = WebSite2PDF.Client()
-c.pdf(url, filename = "file_name.pdf")
+c.pdf(url, filename="file_name.pdf")
 ```
 
 ### Using a file HTML
@@ -117,7 +117,7 @@ import WebSite2PDF
 url = "https://pypi.org"
 
 c = WebSite2PDF.Client()
-c.pdf(url, filename = "file_name.pdf", delay = 3)
+c.pdf(url, filename="file_name.pdf", delay=3)
 ```
 
 ### Using global [PDF Options](https://github.com/uNickz/WebSite2PDF/blob/main/PDF%20Page%20Options.md)
