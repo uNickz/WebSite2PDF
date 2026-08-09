@@ -1,3 +1,7 @@
+---
+description: Every field of PdfOptions, Margin, RenderOptions and BrowserOptions, with defaults, validation rules and header and footer templates.
+---
+
 # Options reference
 
 Options are split along the three axes they belong to. Each is a frozen
@@ -14,18 +18,18 @@ How the loaded page is painted into a PDF.
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `paper_format` | `PaperFormat \| None` | `"A4"` | Named paper size. Ignored when `width` or `height` is set |
-| `width` | `str \| None` | `None` | Explicit page width as a CSS length. Overrides `paper_format` |
-| `height` | `str \| None` | `None` | Explicit page height as a CSS length. Overrides `paper_format` |
+| `paper_format` | `PaperFormat | None` | `"A4"` | Named paper size. Ignored when `width` or `height` is set |
+| `width` | `str | None` | `None` | Explicit page width as a CSS length. Overrides `paper_format` |
+| `height` | `str | None` | `None` | Explicit page height as a CSS length. Overrides `paper_format` |
 | `scale` | `float` | `1.0` | Rendering scale, between `0.1` and `2.0` |
 | `landscape` | `bool` | `False` | Landscape orientation |
-| `margin` | `Margin \| None` | `None` | Page margins. `None` leaves Chromium's default |
+| `margin` | `Margin | None` | `None` | Page margins. `None` leaves Chromium's default |
 | `print_background` | `bool` | `True` | Paint background graphics |
 | `prefer_css_page_size` | `bool` | `False` | Let an `@page` size in the document's CSS win over `paper_format` |
-| `page_ranges` | `str \| None` | `None` | Pages to emit, e.g. `"1-3, 8"`. `None` emits all |
+| `page_ranges` | `str | None` | `None` | Pages to emit, e.g. `"1-3, 8"`. `None` emits all |
 | `display_header_footer` | `bool` | `False` | Render the header and footer templates |
-| `header_template` | `str \| None` | `None` | HTML for the page header |
-| `footer_template` | `str \| None` | `None` | HTML for the page footer |
+| `header_template` | `str | None` | `None` | HTML for the page header |
+| `footer_template` | `str | None` | `None` | HTML for the page footer |
 | `outline` | `bool` | `False` | Embed a document outline |
 | `tagged` | `bool` | `False` | Emit a tagged, accessible PDF |
 
@@ -94,8 +98,8 @@ How navigation waits for the page to become ready.
 | --- | --- | --- | --- |
 | `wait_until` | `WaitUntil` | `"load"` | Navigation milestone to wait for |
 | `timeout` | `float` | `30000.0` | Navigation timeout in milliseconds. `0` disables it |
-| `emulate_media` | `MediaType \| None` | `None` | `"print"` or `"screen"` |
-| `wait_for_selector` | `str \| None` | `None` | CSS selector to wait for before rendering |
+| `emulate_media` | `MediaType | None` | `None` | `"print"` or `"screen"` |
+| `wait_for_selector` | `str | None` | `None` | CSS selector to wait for before rendering |
 | `extra_wait` | `float` | `0.0` | Extra idle milliseconds after the page is ready |
 
 ### Milestones
@@ -121,17 +125,17 @@ How the browser process and its context are created.
 | --- | --- | --- | --- |
 | `headless` | `bool` | `True` | Run without a visible window |
 | `args` | `tuple[str, ...]` | `()` | Extra Chromium command-line switches |
-| `executable_path` | `str \| None` | `None` | Path to a specific Chromium build |
-| `channel` | `str \| None` | `None` | Branded channel, e.g. `"chrome"`, `"msedge"` |
+| `executable_path` | `str | None` | `None` | Path to a specific Chromium build |
+| `channel` | `str | None` | `None` | Branded channel, e.g. `"chrome"`, `"msedge"` |
 | `launch_timeout` | `float` | `30000.0` | Milliseconds to wait for the browser to start |
-| `user_agent` | `str \| None` | `None` | Override the `User-Agent` header |
-| `viewport` | `tuple[int, int] \| None` | `(1280, 720)` | Viewport size. `None` disables the fixed viewport |
+| `user_agent` | `str | None` | `None` | Override the `User-Agent` header |
+| `viewport` | `tuple[int, int] | None` | `(1280, 720)` | Viewport size. `None` disables the fixed viewport |
 | `device_scale_factor` | `float` | `1.0` | Device pixel ratio |
-| `locale` | `str \| None` | `None` | BCP 47 locale, e.g. `"it-IT"` |
-| `timezone_id` | `str \| None` | `None` | IANA timezone, e.g. `"Europe/Rome"` |
+| `locale` | `str | None` | `None` | BCP 47 locale, e.g. `"it-IT"` |
+| `timezone_id` | `str | None` | `None` | IANA timezone, e.g. `"Europe/Rome"` |
 | `ignore_https_errors` | `bool` | `False` | Accept invalid TLS certificates |
-| `extra_http_headers` | `Mapping[str, str] \| None` | `None` | Headers added to every request |
-| `http_credentials` | `tuple[str, str] \| None` | `None` | `(username, password)` for HTTP basic auth |
+| `extra_http_headers` | `Mapping[str, str] | None` | `None` | Headers added to every request |
+| `http_credentials` | `tuple[str, str] | None` | `None` | `(username, password)` for HTTP basic auth |
 | `cookies` | `tuple[Mapping[str, Any], ...]` | `()` | Cookies installed on the context before navigation |
 
 Cookies use Playwright's format. Either `url`, or both `domain` and `path`, are

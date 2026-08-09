@@ -11,6 +11,8 @@ copyright: Copyright &copy; 2023-2026 uNickz
 
 theme:
   name: material
+  custom_dir: overrides
+  language: en
   icon:
     repo: fontawesome/brands/github
   features:

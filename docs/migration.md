@@ -1,3 +1,7 @@
+---
+description: Translate WebSite2PDF 0.x code to the 1.0 API: convert() instead of pdf(), typed option objects, and what was removed and why.
+---
+
 # Migrating from 0.x
 
 Version 1.0 is a rewrite. The import name changed, the API changed, and Selenium

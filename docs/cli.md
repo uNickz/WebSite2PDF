@@ -1,3 +1,7 @@
+---
+description: Every flag of the website2pdf command: output to a file, a directory or stdout, paper setup, waiting, concurrency and exit codes.
+---
+
 # Command line
 
 Install the extra to get the `website2pdf` command:

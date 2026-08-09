@@ -1,3 +1,7 @@
+---
+description: Convert single pages or batches to PDF, wait for late-loading content, set cookies and headers, and choose page size and margins.
+---
+
 # User guide
 
 ## Starting and stopping

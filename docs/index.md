@@ -1,3 +1,7 @@
+---
+description: Render web pages and local HTML files to PDF from Python or the command line. Typed, async-capable, headless Chromium via Playwright.
+---
+
 # WebSite2PDF
 
 Render web pages and local HTML files to PDF, from Python or from the shell.

@@ -1,3 +1,7 @@
+---
+description: API reference for the Client and AsyncClient classes, the option objects and the exception hierarchy, generated from the source.
+---
+
 # API reference
 
 Generated from the source. Everything listed here is public and covered by

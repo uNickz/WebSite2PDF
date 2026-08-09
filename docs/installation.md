@@ -1,3 +1,7 @@
+---
+description: Install website2pdf with pip and download the Chromium build Playwright manages, including Linux server and container setups.
+---
+
 # Installation
 
 ## The package
