@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v9
+      - uses: astral-sh/setup-uv@v9.0.0
 
       # Catches the classic release mistake: tagging v1.2.0 while pyproject
       # still says 1.1.0, which would publish the wrong version under the tag.
