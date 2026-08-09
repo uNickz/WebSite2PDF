@@ -11,7 +11,7 @@ copyright: Copyright &copy; 2023-2026 uNickz
 
 theme:
   name: material
-  custom_dir: overrides
+  custom_dir: docs/overrides
   language: en
   icon:
     repo: fontawesome/brands/github
@@ -39,6 +39,12 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
+
+# The theme override lives under docs/ to keep the repository root clean.
+# Everything in docs_dir is copied into the site, so it has to be excluded
+# from the output; it is still read as a template through custom_dir.
+exclude_docs: |
+  overrides/
 
 # mkdocs serve only watches docs_dir and this file by default, so editing a
 # docstring would not refresh the API reference without these.
