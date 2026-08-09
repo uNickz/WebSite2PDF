@@ -1,0 +1,16 @@
+name: CodeQL config
+
+# security-extended rather than security-and-quality. The quality suite adds
+# maintainability queries that duplicate what ruff already enforces here with
+# 34 rule sets, and it misreads modern typing idioms: it reported the `...`
+# body of every @overload declaration as a statement with no effect, which is
+# precisely what PEP 484 asks for.
+queries:
+  - uses: security-extended
+
+# Tests are not shipped: the wheel contains only src/website2pdf. Analysing
+# them produced findings about assertions on error-message text and about
+# fixtures that manage a client by hand on purpose, neither of which is
+# reachable by anyone installing the package.
+paths-ignore:
+  - tests

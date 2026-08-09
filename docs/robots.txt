@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://unickz.github.io/WebSite2PDF/sitemap.xml

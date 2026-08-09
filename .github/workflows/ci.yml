@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+      - run: uv sync --locked --all-extras --all-groups
+      - run: uv run ruff check --output-format=github .
+      - run: uv run ruff format --check .
+
+  typecheck:
+    name: Type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+      - run: uv sync --locked --all-extras --all-groups
+      - run: uv run mypy
+
+  test:
+    name: Test ${{ matrix.python-version }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        # The full sweep runs on Linux; the other platforms guard the paths that
+        # actually differ there (file URIs, reserved file names, browser paths).
+        include:
+          - os: macos-latest
+            python-version: "3.13"
+          - os: windows-latest
+            python-version: "3.13"
+    env:
+      # One path on every platform, so the cache key does not need to branch.
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+
+      - run: uv sync --locked --all-extras --all-groups
+
+      - name: Restore the Chromium build
+        uses: actions/cache@v6
+        with:
+          path: ${{ github.workspace }}/.playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+
+      # --with-deps shells out to apt, so it is Linux only. The system packages
+      # it installs are not part of the cache above, hence running it every time.
+      - name: Install Chromium and its system libraries
+        if: runner.os == 'Linux'
+        run: uv run playwright install --with-deps chromium
+
+      - name: Install Chromium
+        if: runner.os != 'Linux'
+        run: uv run playwright install chromium
+
+      - run: uv run pytest --cov --cov-report=xml --cov-report=term-missing
+
+      - name: Upload the coverage report
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage
+          path: coverage.xml
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+
+      - run: uv build
+
+      # An editable install records only its import shim, so no test can prove
+      # the marker reached the wheel. This is the only place that can.
+      - name: Check the wheel ships what it claims
+        run: |
+          python - <<'PY'
+          import glob
+          import zipfile
+
+          wheel = glob.glob("dist/*.whl")[0]
+          names = set(zipfile.ZipFile(wheel).namelist())
+          required = {
+              "website2pdf/__init__.py",
+              "website2pdf/__main__.py",
+              "website2pdf/py.typed",
+          }
+          missing = required - names
+          if missing:
+              raise SystemExit(f"missing from {wheel}: {sorted(missing)}")
+          print(f"{wheel} ships {len(names)} entries, py.typed included")
+          PY
+
+      - name: Check the package metadata
+        run: uvx twine check --strict dist/*
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: distributions
+          path: dist/
+
+  ci:
+    name: CI
+    needs: [lint, typecheck, test, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      # A single status to require in branch protection, so the matrix can grow
+      # without the protection rules having to be edited.
+      - name: Fail if any job did not succeed
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1

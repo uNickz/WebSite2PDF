@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Question or idea
+    url: https://github.com/uNickz/WebSite2PDF/discussions
+    about: Ask a question or float an idea in Discussions.
+  - name: Documentation
+    url: https://unickz.github.io/WebSite2PDF/
+    about: The guide, the options reference and the API documentation.
+  - name: Security vulnerability
+    url: https://github.com/uNickz/WebSite2PDF/security/advisories/new
+    about: Report privately. Please do not open a public issue.

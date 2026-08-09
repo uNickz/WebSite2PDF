@@ -1,0 +1,213 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+# ---------------------------------------------------------------------------
+# Project metadata (PEP 621)
+# ---------------------------------------------------------------------------
+
+[project]
+name = "website2pdf"
+version = "1.0.0.dev0"
+description = "Fast, typed Python library and CLI to render web pages and local HTML files to PDF."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "uNickz", email = "unickz.dev@gmail.com" }]
+maintainers = [{ name = "uNickz", email = "unickz.dev@gmail.com" }]
+keywords = ["pdf", "html", "website", "converter", "playwright", "chromium", "print"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Typing :: Typed",
+]
+dependencies = ["playwright>=1.45"]
+
+[project.optional-dependencies]
+cli = ["typer>=0.12"]
+
+[project.scripts]
+website2pdf = "website2pdf.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/uNickz/WebSite2PDF"
+Documentation = "https://unickz.github.io/WebSite2PDF/"
+Repository = "https://github.com/uNickz/WebSite2PDF"
+Issues = "https://github.com/uNickz/WebSite2PDF/issues"
+Changelog = "https://github.com/uNickz/WebSite2PDF/blob/main/CHANGELOG.md"
+
+# ---------------------------------------------------------------------------
+# Development dependencies (PEP 735) -- installed by `uv sync`
+# ---------------------------------------------------------------------------
+
+[dependency-groups]
+dev = [
+    "mypy>=1.11",
+    "pre-commit>=3.8",
+    "pypdf>=4.3",
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+]
+docs = [
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.26",
+]
+
+# ---------------------------------------------------------------------------
+# Build
+# ---------------------------------------------------------------------------
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/website2pdf"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests"]
+
+# ---------------------------------------------------------------------------
+# Ruff -- lint + format (replaces black, isort, flake8, pyupgrade, bandit)
+# ---------------------------------------------------------------------------
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "A",     # flake8-builtins
+    "ANN",   # flake8-annotations
+    "ARG",   # flake8-unused-arguments
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "C4",    # flake8-comprehensions
+    "D",     # pydocstyle
+    "DTZ",   # flake8-datetimez
+    "E",     # pycodestyle errors
+    "EM",    # flake8-errmsg
+    "F",     # pyflakes
+    "FA",    # flake8-future-annotations
+    "I",     # isort
+    "ICN",   # flake8-import-conventions
+    "INP",   # flake8-no-pep420
+    "ISC",   # flake8-implicit-str-concat
+    "N",     # pep8-naming
+    "PIE",   # flake8-pie
+    "PL",    # pylint
+    "PT",    # flake8-pytest-style
+    "PTH",   # flake8-use-pathlib
+    "Q",     # flake8-quotes
+    "RET",   # flake8-return
+    "RSE",   # flake8-raise
+    "RUF",   # ruff-specific
+    "S",     # flake8-bandit
+    "SIM",   # flake8-simplify
+    "SLF",   # flake8-self
+    "T20",   # flake8-print
+    "TC",    # flake8-type-checking
+    "TID",   # flake8-tidy-imports
+    "TRY",   # tryceratops
+    "UP",    # pyupgrade
+    "W",     # pycodestyle warnings
+]
+ignore = [
+    "D203",   # conflicts with D211 (blank line before class docstring)
+    "D213",   # conflicts with D212 (multi-line summary position)
+    "ISC001", # conflicts with the formatter
+    "TRY003", # long messages outside exception class -- too noisy for a small lib
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "ANN",     # tests do not need full annotations
+    "D",       # tests do not need docstrings
+    "INP001",  # tests are not an importable package (--import-mode=importlib)
+    "PLR2004", # magic values are fine in assertions
+    "S101",    # assert is the point
+    "SLF001",  # tests may poke at private members
+]
+"src/website2pdf/__main__.py" = [
+    "PLR0913", # a CLI command legitimately has one parameter per option
+    "PLR0917", # ditto: Typer declares options as parameters
+    "T20",     # the CLI is allowed to print
+    "TC",      # Typer resolves annotations at runtime, so they cannot be deferred
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "parents"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+# ---------------------------------------------------------------------------
+# Mypy -- strict
+# ---------------------------------------------------------------------------
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src", "tests"]
+strict = true
+warn_unreachable = true
+enable_error_code = [
+    "ignore-without-code",
+    "possibly-undefined",
+    "redundant-expr",
+    "truthy-bool",
+]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib"]
+markers = [
+    "browser: requires a real Chromium install (deselect with -m 'not browser')",
+]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = ["error"]
+
+# ---------------------------------------------------------------------------
+# Coverage -- run with `uv run pytest --cov`
+# (deliberately not in addopts: pytest-cov interferes with debuggers)
+# ---------------------------------------------------------------------------
+
+[tool.coverage.run]
+source = ["website2pdf"]
+branch = true
+# Playwright's sync API switches greenlets on every call; without this the
+# tracer is lost at the first one and the client looks half untested.
+concurrency = ["thread", "greenlet"]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+skip_covered = true
+exclude_also = [
+    "@(typing\\.)?overload",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+]

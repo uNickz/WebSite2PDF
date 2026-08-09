@@ -1,0 +1,82 @@
+name: Bug report
+description: Something does not work the way it is documented
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. The details below are what usually decide whether
+        a bug can be reproduced on the first try or after three rounds of
+        questions.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before reporting
+      options:
+        - label: I am on website2pdf 1.x, not 0.x
+          required: true
+        - label: I have run `playwright install chromium`
+          required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: >
+        The smallest script or command that shows the problem. If it depends on
+        a specific page, a minimal HTML file is far more useful than a URL that
+        may change.
+      render: python
+    validations:
+      required: true
+
+  - type: textarea
+    id: traceback
+    attributes:
+      label: Traceback or output
+      description: The complete traceback, not just the last line.
+      render: text
+
+  - type: input
+    id: version
+    attributes:
+      label: website2pdf version
+      description: "`python -c \"import website2pdf; print(website2pdf.__version__)\"`"
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      description: "`python -V`"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: playwright
+    attributes:
+      label: Playwright version
+      description: "`python -c \"import playwright; print(playwright.__version__)\"`"

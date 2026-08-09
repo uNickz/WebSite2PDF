@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{#
+  Material only emits a description meta tag on its own. Link previews on X,
+  LinkedIn, Slack, Discord and Telegram all read Open Graph, so without these
+  a shared link renders as a bare URL.
+
+  Doing it here rather than through the social plugin keeps the build free of
+  Cairo and Pillow, which would otherwise have to be installed on every CI
+  runner just to draw a card image we already have.
+#}
+{% block extrahead %}
+  {% set page_title = config.site_name %}
+  {% if page and page.title and not page.is_homepage %}
+    {% set page_title = page.title ~ " - " ~ config.site_name %}
+  {% endif %}
+
+  {% set page_description = config.site_description %}
+  {% if page and page.meta and page.meta.description %}
+    {% set page_description = page.meta.description %}
+  {% endif %}
+
+  {% set page_url = page.canonical_url if page else config.site_url %}
+  {% set card = config.site_url ~ "assets/social-card.png" %}
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ config.site_name }}">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_description }}">
+  <meta property="og:url" content="{{ page_url }}">
+  <meta property="og:image" content="{{ card }}">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta property="og:image:alt" content="{{ config.site_name }}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title }}">
+  <meta name="twitter:description" content="{{ page_description }}">
+  <meta name="twitter:image" content="{{ card }}">
+
+  {% if page and page.is_homepage %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "{{ config.site_name }}",
+      "description": "{{ config.site_description }}",
+      "url": "{{ config.site_url }}",
+      "codeRepository": "{{ config.repo_url }}",
+      "programmingLanguage": "Python",
+      "runtimePlatform": "Python 3.10+",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": {
+        "@type": "Person",
+        "name": "{{ config.site_author }}",
+        "url": "https://github.com/uNickz"
+      }
+    }
+  </script>
+  {% endif %}
+{% endblock %}
