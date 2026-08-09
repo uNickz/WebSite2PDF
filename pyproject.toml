@@ -8,7 +8,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "website2pdf"
-version = "1.0.0.dev0"
+version = "1.0.0"
 description = "Fast, typed Python library and CLI to render web pages and local HTML files to PDF."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -18,7 +18,7 @@ authors = [{ name = "uNickz", email = "unickz.dev@gmail.com" }]
 maintainers = [{ name = "uNickz", email = "unickz.dev@gmail.com" }]
 keywords = ["pdf", "html", "website", "converter", "playwright", "chromium", "print"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
