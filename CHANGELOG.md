@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - Unreleased
+## [1.0.0] - 2026-08-09
 
 A full rewrite. The import name, the API and the rendering engine all change,
 so 0.x code does not run against this release. See
