@@ -102,7 +102,7 @@ suppresses the listing.
 | Code | Meaning |
 | --- | --- |
 | `0` | Every target was converted |
-| `1` | A conversion failed — the page did not load, or could not be printed |
+| `1` | A conversion failed, the page did not load, or could not be printed |
 | `2` | The command was used incorrectly |
 
 Usage errors are reported before a browser is launched, so a mistyped

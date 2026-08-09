@@ -14,14 +14,14 @@ NAVIGABLE_SCHEMES = frozenset({"about", "data", "file", "http", "https"})
 def normalize_target(target: str | Path) -> str:
     """Turn a user-supplied target into a URL the browser can navigate to.
 
-    Accepts an ``http(s)`` URL, a ``file://`` URL, or a path to a local file,
-    given either as a :class:`~pathlib.Path` or as a plain string.
+    Accepts an `http(s)` URL, a `file://` URL, or a path to a local file,
+    given either as a `Path` or as a plain string.
 
     Args:
         target: URL or local filesystem path.
 
     Returns:
-        A URL suitable for ``page.goto()``.
+        A URL suitable for `page.goto()`.
 
     Raises:
         InvalidTargetError: If the target is empty, uses an unsupported scheme,
@@ -52,16 +52,16 @@ def normalize_target(target: str | Path) -> str:
 
 
 def _file_to_uri(path: Path) -> str:
-    """Resolve a local file and convert it to a ``file://`` URI.
+    """Resolve a local file and convert it to a `file://` URI.
 
     Args:
         path: Path to an existing HTML file.
 
     Returns:
-        The absolute ``file://`` URI for ``path``.
+        The absolute `file://` URI for `path`.
 
     Raises:
-        InvalidTargetError: If ``path`` does not point at an existing file.
+        InvalidTargetError: If `path` does not point at an existing file.
     """
     resolved = path.expanduser()
     try:

@@ -40,7 +40,7 @@ Tests split in two:
 
 - `tests/unit/` never launches a browser and runs in well under a second.
 - `tests/integration/` drives real Chromium against fixtures served over
-  loopback from `tests/fixtures/`. **No test may reach the public internet** —
+  loopback from `tests/fixtures/`. **No test may reach the public internet**,
   the 0.x suite converted `pypi.org` on every run, which made a red build
   ambiguous and a green one close to meaningless.
 
@@ -89,7 +89,7 @@ Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `docs:`,
 `test:`, `ci:`, `chore:`, with `!` for a breaking change.
 
 Say what changed and why in the body. If you fixed a bug, describe the failure
-someone would have seen — that is what a future reader needs.
+someone would have seen, that is what a future reader needs.
 
 Add an entry to `CHANGELOG.md` under `Unreleased` for anything user-visible.
 

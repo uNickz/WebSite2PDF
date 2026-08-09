@@ -9,7 +9,7 @@ body:
       label: The problem
       description: >
         What are you trying to do that is awkward or impossible today? Describe
-        the situation rather than the solution — it often turns out there is a
+        the situation rather than the solution, it often turns out there is a
         better fit than the first idea.
     validations:
       required: true

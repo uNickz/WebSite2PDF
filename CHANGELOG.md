@@ -37,7 +37,7 @@ so 0.x code does not run against this release. See
   were published under.
 - The exception hierarchy is flat under `WebSite2PDFError`. The aggregate
   `Errors` and `Drivers` classes are gone, as are `ClientAlreadyStarted` and
-  `ClientAlreadyStopped` — `start()` and `close()` are idempotent now.
+  `ClientAlreadyStopped`, `start()` and `close()` are idempotent now.
 - Naming follows PEP 8: `pdfOptions` is `pdf_options`, `seleniumOptions` is
   `browser_options`.
 

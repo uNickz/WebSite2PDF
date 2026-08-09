@@ -1,11 +1,11 @@
 """Per-thread sharing of the synchronous Playwright driver.
 
 Playwright's sync API drives its event loop with greenlets inside the calling
-thread. A second ``sync_playwright().start()`` on that thread therefore sees a
+thread. A second `sync_playwright().start()` on that thread therefore sees a
 loop already running and fails with a message telling the caller to use the
 async API -- confusing advice for someone who never touched asyncio.
 
-Sharing one reference-counted driver per thread lets several :class:`Client`
+Sharing one reference-counted driver per thread lets several `Client`
 instances coexist. Each client still launches its own browser, so their
 configurations stay independent.
 """

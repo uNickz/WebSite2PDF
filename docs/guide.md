@@ -84,7 +84,7 @@ paths = client.convert_many(
 Omit the directory to get a list of `bytes` instead. Results come back in input
 order.
 
-Pages that share a title do not overwrite each other — the second file becomes
+Pages that share a title do not overwrite each other, the second file becomes
 `Title (2).pdf`, the third `Title (3).pdf`.
 
 ## Concurrency
@@ -119,7 +119,7 @@ input order and stay reproducible between runs.
     message about asyncio that has nothing to do with your code.
 
     In an asyncio program, use `AsyncClient`. Several `Client` instances on one
-    thread are fine — they share one reference-counted driver.
+    thread are fine, they share one reference-counted driver.
 
 ## Waiting for the page
 
@@ -181,7 +181,7 @@ Chromium's own behaviour:
 PdfOptions(width="20cm", height="10cm")
 ```
 
-Headers and footers need to be switched on before their templates are used —
+Headers and footers need to be switched on before their templates are used,
 constructing them the other way round raises
 [`OptionsError`][website2pdf.OptionsError] rather than silently doing nothing:
 

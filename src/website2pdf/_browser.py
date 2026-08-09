@@ -1,6 +1,6 @@
 """Translation of Playwright failures into this library's exception types.
 
-Playwright signals every problem with a single ``Error`` class, so the useful
+Playwright signals every problem with a single `Error` class, so the useful
 distinctions live in the message text. Keeping that string matching in one
 place means the sync and async clients stay in agreement about what a given
 failure means.
@@ -30,9 +30,9 @@ def translate_launch_error(exc: Exception) -> WebSite2PDFError:
         exc: The exception raised by Playwright.
 
     Returns:
-        :class:`~website2pdf.errors.BrowserNotInstalledError` when the browser
+        [`BrowserNotInstalledError`][website2pdf.BrowserNotInstalledError] when the browser
         binary is missing, otherwise
-        :class:`~website2pdf.errors.BrowserLaunchError`.
+        [`BrowserLaunchError`][website2pdf.BrowserLaunchError].
     """
     text = str(exc)
     lowered = text.lower()

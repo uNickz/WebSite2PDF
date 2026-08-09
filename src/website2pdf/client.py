@@ -34,19 +34,21 @@ class Client:
     runs in its own browser context, so cookies and storage never leak between
     pages.
 
-    Use it as a context manager so the browser is always torn down::
+    Use it as a context manager so the browser is always torn down:
 
-        with Client() as client:
-            pdf = client.convert("https://example.com")
+    ```python
+    with Client() as client:
+        pdf = client.convert("https://example.com")
+    ```
 
-    Calling :meth:`convert` on a client that has not been started will start it
-    implicitly, in which case :meth:`close` is the caller's responsibility.
+    Calling `convert()` on a client that has not been started will start it
+    implicitly, in which case `close()` is the caller's responsibility.
 
     Note:
         Playwright's synchronous driver runs an event loop on the calling
-        thread, so ``asyncio.run()`` will fail on that thread while a client is
-        open. In an asyncio program use :class:`website2pdf.AsyncClient`
-        instead. Several ``Client`` instances on one thread are fine: they
+        thread, so `asyncio.run()` will fail on that thread while a client is
+        open. In an asyncio program use [`AsyncClient`][website2pdf.AsyncClient]
+        instead. Several `Client` instances on one thread are fine: they
         share one reference-counted driver.
     """
 
@@ -156,18 +158,18 @@ class Client:
         """Render a single page to PDF.
 
         Args:
-            target: URL, ``file://`` URL, or path to a local HTML file.
+            target: URL, `file://` URL, or path to a local HTML file.
             dest: Where to write the PDF. When omitted the PDF is returned as
-                bytes. May be a file name, a name containing ``{title}``, or an
+                bytes. May be a file name, a name containing `{title}`, or an
                 existing directory.
             pdf_options: Overrides this client's PDF options for this call.
             render_options: Overrides this client's render options for this call.
 
         Returns:
-            The PDF bytes when ``dest`` is omitted, otherwise the path written.
+            The PDF bytes when `dest` is omitted, otherwise the path written.
 
         Raises:
-            InvalidTargetError: If ``target`` is not a usable URL or file.
+            InvalidTargetError: If `target` is not a usable URL or file.
             NavigationError: If the page could not be loaded.
             RenderError: If the page could not be printed.
         """
@@ -214,19 +216,19 @@ class Client:
         """Render several pages to PDF, one after another.
 
         Pages that share a title do not overwrite each other; the second and
-        later files gain a ``" (2)"`` suffix.
+        later files gain a `" (2)"` suffix.
 
         Args:
             targets: URLs or local HTML files.
             dest_dir: Directory to write into. Created if missing. When omitted
                 the PDFs are returned as bytes.
-            filename_template: Name template for each file. ``{title}`` is the
+            filename_template: Name template for each file. `{title}` is the
                 only supported placeholder.
             pdf_options: Overrides this client's PDF options for this call.
             render_options: Overrides this client's render options for this call.
 
         Returns:
-            A list of PDF bytes when ``dest_dir`` is omitted, otherwise the list
+            A list of PDF bytes when `dest_dir` is omitted, otherwise the list
             of paths written, in input order.
         """
         if dest_dir is None:
@@ -272,11 +274,11 @@ class Client:
 
         Args:
             target: URL or local HTML file.
-            pdf_options: PDF options for this call, or ``None`` for the default.
-            render_options: Render options for this call, or ``None`` for the default.
+            pdf_options: PDF options for this call, or `None` for the default.
+            render_options: Render options for this call, or `None` for the default.
 
         Returns:
-            A ``(pdf_bytes, page_title)`` pair.
+            A `(pdf_bytes, page_title)` pair.
 
         Raises:
             NavigationError: If the page could not be loaded.

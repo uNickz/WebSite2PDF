@@ -2,9 +2,9 @@
 
 Options are split along the three axes they actually belong to:
 
-* :class:`PdfOptions` -- how the loaded page is painted into a PDF.
-* :class:`BrowserOptions` -- how the browser and its context are created.
-* :class:`RenderOptions` -- how navigation waits for the page to be ready.
+* `PdfOptions` -- how the loaded page is painted into a PDF.
+* `BrowserOptions` -- how the browser and its context are created.
+* `RenderOptions` -- how navigation waits for the page to be ready.
 
 Each object is a frozen dataclass, so defaults can be shared safely between
 clients and calls without the aliasing hazard of mutable default arguments.
@@ -38,7 +38,7 @@ DEFAULT_TIMEOUT_MS = 30_000.0
 
 @dataclass(frozen=True, slots=True)
 class Margin:
-    """Page margins, expressed in CSS units (``px``, ``in``, ``cm``, ``mm``)."""
+    """Page margins, expressed in CSS units (`px`, `in`, `cm`, `mm`)."""
 
     top: str = "0"
     right: str = "0"
@@ -50,18 +50,18 @@ class Margin:
         """Build a margin with the same value on all four sides.
 
         Args:
-            value: CSS length, for example ``"1cm"``.
+            value: CSS length, for example `"1cm"`.
 
         Returns:
-            A margin applying ``value`` to every side.
+            A margin applying `value` to every side.
         """
         return cls(top=value, right=value, bottom=value, left=value)
 
     def to_playwright(self) -> dict[str, str]:
-        """Convert to the mapping Playwright's ``page.pdf()`` expects.
+        """Convert to the mapping Playwright's `page.pdf()` expects.
 
         Returns:
-            A dict with ``top``, ``right``, ``bottom`` and ``left`` keys.
+            A dict with `top`, `right`, `bottom` and `left` keys.
         """
         return {"top": self.top, "right": self.right, "bottom": self.bottom, "left": self.left}
 
@@ -71,18 +71,18 @@ class PdfOptions:
     """How the loaded page is painted into a PDF.
 
     Attributes:
-        paper_format: Named paper size. Ignored when ``width`` or ``height`` is set.
-        width: Explicit page width as a CSS length. Overrides ``paper_format``.
-        height: Explicit page height as a CSS length. Overrides ``paper_format``.
+        paper_format: Named paper size. Ignored when `width` or `height` is set.
+        width: Explicit page width as a CSS length. Overrides `paper_format`.
+        height: Explicit page height as a CSS length. Overrides `paper_format`.
         scale: Rendering scale between 0.1 and 2.0.
         landscape: Whether to use landscape orientation.
-        margin: Page margins. ``None`` leaves Chromium's default.
+        margin: Page margins. `None` leaves Chromium's default.
         print_background: Whether to paint background graphics. Defaults to
-            ``True`` because a page converted without its backgrounds rarely
+            `True` because a page converted without its backgrounds rarely
             matches what the user saw.
-        prefer_css_page_size: Whether an ``@page`` size in the document's CSS
-            wins over ``paper_format``.
-        page_ranges: Pages to emit, for example ``"1-3, 8"``. ``None`` emits all.
+        prefer_css_page_size: Whether an `@page` size in the document's CSS
+            wins over `paper_format`.
+        page_ranges: Pages to emit, for example `"1-3, 8"`. `None` emits all.
         display_header_footer: Whether to render the header and footer templates.
         header_template: HTML for the page header.
         footer_template: HTML for the page footer.
@@ -109,8 +109,8 @@ class PdfOptions:
         """Validate values that Chromium would otherwise reject opaquely.
 
         Raises:
-            OptionsError: If ``scale`` is out of range, or a header or footer
-                template is supplied without enabling ``display_header_footer``.
+            OptionsError: If `scale` is out of range, or a header or footer
+                template is supplied without enabling `display_header_footer`.
         """
         if not MIN_SCALE <= self.scale <= MAX_SCALE:
             message = f"scale must be between {MIN_SCALE} and {MAX_SCALE}, got {self.scale}"
@@ -125,7 +125,7 @@ class PdfOptions:
             raise OptionsError(message)
 
     def to_playwright(self) -> dict[str, Any]:
-        """Convert to keyword arguments for Playwright's ``page.pdf()``.
+        """Convert to keyword arguments for Playwright's `page.pdf()`.
 
         Returns:
             Only the keys this object actually constrains, so Chromium's own
@@ -171,17 +171,17 @@ class BrowserOptions:
         headless: Whether to run without a visible window.
         args: Extra Chromium command-line switches.
         executable_path: Path to a specific Chromium build.
-        channel: Branded channel such as ``"chrome"`` or ``"msedge"``.
+        channel: Branded channel such as `"chrome"` or `"msedge"`.
         launch_timeout: Milliseconds to wait for the browser to start.
-        user_agent: Override for the ``User-Agent`` header.
-        viewport: Viewport size as ``(width, height)``. ``None`` disables the
+        user_agent: Override for the `User-Agent` header.
+        viewport: Viewport size as `(width, height)`. `None` disables the
             fixed viewport.
         device_scale_factor: Device pixel ratio.
-        locale: BCP 47 locale, for example ``"it-IT"``.
-        timezone_id: IANA timezone, for example ``"Europe/Rome"``.
+        locale: BCP 47 locale, for example `"it-IT"`.
+        timezone_id: IANA timezone, for example `"Europe/Rome"`.
         ignore_https_errors: Whether to accept invalid TLS certificates.
         extra_http_headers: Headers added to every request.
-        http_credentials: ``(username, password)`` for HTTP basic auth.
+        http_credentials: `(username, password)` for HTTP basic auth.
         cookies: Cookies installed on the context before navigation, in
             Playwright's cookie format.
     """
@@ -202,7 +202,7 @@ class BrowserOptions:
     cookies: tuple[Mapping[str, Any], ...] = ()
 
     def to_launch_kwargs(self) -> dict[str, Any]:
-        """Convert to keyword arguments for ``playwright.chromium.launch()``.
+        """Convert to keyword arguments for `playwright.chromium.launch()`.
 
         Returns:
             Only the keys this object constrains.
@@ -220,7 +220,7 @@ class BrowserOptions:
         return options
 
     def to_context_kwargs(self) -> dict[str, Any]:
-        """Convert to keyword arguments for ``browser.new_context()``.
+        """Convert to keyword arguments for `browser.new_context()`.
 
         Returns:
             Only the keys this object constrains.
@@ -253,11 +253,11 @@ class RenderOptions:
     """How navigation waits for the page to become ready.
 
     Attributes:
-        wait_until: Navigation milestone to wait for. ``"networkidle"`` is the
+        wait_until: Navigation milestone to wait for. `"networkidle"` is the
             safest choice for pages that fetch content after load.
-        timeout: Navigation timeout in milliseconds. ``0`` disables it.
+        timeout: Navigation timeout in milliseconds. `0` disables it.
         emulate_media: CSS media type to emulate. Chromium renders PDFs with
-            ``print`` media by default; pass ``"screen"`` to reproduce the
+            `print` media by default; pass `"screen"` to reproduce the
             on-screen appearance instead.
         wait_for_selector: CSS selector to wait for before rendering.
         extra_wait: Additional idle time in milliseconds after the page is
@@ -274,7 +274,7 @@ class RenderOptions:
         """Validate the timing values.
 
         Raises:
-            OptionsError: If ``timeout`` or ``extra_wait`` is negative.
+            OptionsError: If `timeout` or `extra_wait` is negative.
         """
         if self.timeout < 0:
             message = f"timeout must not be negative, got {self.timeout}"

@@ -1,27 +1,32 @@
 """Render web pages and local HTML files to PDF.
 
-Synchronous use::
+Synchronous use:
 
-    from website2pdf import Client
+```python
+from website2pdf import Client
 
-    with Client() as client:
-        client.convert("https://example.com", "example.pdf")
+with Client() as client:
+    client.convert("https://example.com", "example.pdf")
+```
 
-Concurrent use::
+Concurrent use:
 
-    import asyncio
-    from website2pdf import AsyncClient
+```python
+import asyncio
 
-
-    async def main() -> None:
-        async with AsyncClient(concurrency=8) as client:
-            await client.convert_many(urls, dest_dir="out/")
+from website2pdf import AsyncClient
 
 
-    asyncio.run(main())
+async def main() -> None:
+    async with AsyncClient(concurrency=8) as client:
+        await client.convert_many(urls, dest_dir="out/")
+
+
+asyncio.run(main())
+```
 
 Rendering requires the Chromium binary that Playwright manages. Install it
-once with ``playwright install chromium``.
+once with `playwright install chromium`.
 """
 
 from __future__ import annotations

@@ -1,8 +1,10 @@
 """Command-line interface.
 
-Installed as the ``website2pdf`` console script by the ``cli`` extra::
+Installed as the `website2pdf` console script by the `cli` extra:
 
-    pip install "website2pdf[cli]"
+```bash
+pip install "website2pdf[cli]"
+```
 
 Typer lives behind that extra so that importing the library from code does not
 drag a CLI framework along with it.
@@ -32,7 +34,7 @@ STDOUT = "-"
 
 
 class PaperFormatChoice(str, Enum):
-    """Paper sizes accepted by ``--format``."""
+    """Paper sizes accepted by `--format`."""
 
     Letter = "Letter"
     Legal = "Legal"
@@ -48,7 +50,7 @@ class PaperFormatChoice(str, Enum):
 
 
 class WaitUntilChoice(str, Enum):
-    """Navigation milestones accepted by ``--wait-until``."""
+    """Navigation milestones accepted by `--wait-until`."""
 
     commit = "commit"
     domcontentloaded = "domcontentloaded"
@@ -57,7 +59,7 @@ class WaitUntilChoice(str, Enum):
 
 
 class MediaChoice(str, Enum):
-    """CSS media types accepted by ``--media``."""
+    """CSS media types accepted by `--media`."""
 
     print = "print"
     screen = "screen"
@@ -71,7 +73,7 @@ app = typer.Typer(
 
 
 def _version(value: bool) -> None:
-    """Print the version and exit when ``--version`` was passed.
+    """Print the version and exit when `--version` was passed.
 
     Args:
         value: Whether the flag was given.
@@ -85,7 +87,7 @@ def _version(value: bool) -> None:
 
 
 def _expand_targets(targets: list[str]) -> list[str]:
-    """Replace a ``-`` entry with one target per line read from stdin.
+    """Replace a `-` entry with one target per line read from stdin.
 
     Args:
         targets: Raw targets from the command line.
@@ -110,10 +112,10 @@ def _expand_targets(targets: list[str]) -> list[str]:
 
 
 def _parse_headers(headers: list[str]) -> dict[str, str]:
-    """Parse repeated ``Name: value`` options into a mapping.
+    """Parse repeated `Name: value` options into a mapping.
 
     Args:
-        headers: Raw ``--header`` values.
+        headers: Raw `--header` values.
 
     Returns:
         The parsed headers.
@@ -295,8 +297,8 @@ async def _convert_all(
 
     Args:
         targets: Expanded targets.
-        output: Destination, or ``None`` to return bytes for stdout.
-        into_directory: Whether ``output`` names a directory.
+        output: Destination, or `None` to return bytes for stdout.
+        into_directory: Whether `output` names a directory.
         name_template: File name template.
         concurrency: Pages rendered at the same time.
         pdf_options: PDF rendering options.
@@ -304,8 +306,8 @@ async def _convert_all(
         browser_options: Browser and context options.
 
     Returns:
-        Written paths, or a single-element list of PDF bytes when ``output`` is
-        ``None``.
+        Written paths, or a single-element list of PDF bytes when `output` is
+        `None`.
     """
     async with AsyncClient(
         pdf_options=pdf_options,
@@ -321,7 +323,7 @@ async def _convert_all(
 
 
 def main() -> None:
-    """Entry point for the ``website2pdf`` console script."""
+    """Entry point for the `website2pdf` console script."""
     app()
 
 

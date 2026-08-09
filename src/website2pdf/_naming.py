@@ -41,7 +41,7 @@ def sanitize_filename(
     fallback: str = DEFAULT_FALLBACK,
     max_length: int = MAX_STEM_LENGTH,
 ) -> str:
-    """Make ``name`` safe to use as a single path component.
+    """Make `name` safe to use as a single path component.
 
     Strips characters that are illegal on any mainstream filesystem, collapses
     whitespace, defuses Windows reserved device names, and truncates the stem
@@ -79,13 +79,13 @@ def sanitize_filename(
 
 
 def ensure_pdf_suffix(name: str) -> str:
-    """Append a ``.pdf`` extension unless one is already present.
+    """Append a `.pdf` extension unless one is already present.
 
     Args:
         name: File name, with or without extension.
 
     Returns:
-        ``name`` guaranteed to end in ``.pdf`` (case-insensitively).
+        `name` guaranteed to end in `.pdf` (case-insensitively).
     """
     return name if name.lower().endswith(".pdf") else f"{name}.pdf"
 
@@ -99,15 +99,15 @@ def build_filename(
     """Render a file name from a page title and a template.
 
     Args:
-        title: Page title, used to fill the ``{title}`` placeholder.
-        template: Format string. ``{title}`` is the only supported placeholder.
+        title: Page title, used to fill the `{title}` placeholder.
+        template: Format string. `{title}` is the only supported placeholder.
         fallback: Stem to use when the title sanitises down to nothing.
 
     Returns:
-        A safe file name ending in ``.pdf``.
+        A safe file name ending in `.pdf`.
 
     Raises:
-        OptionsError: If ``template`` references an unsupported placeholder.
+        OptionsError: If `template` references an unsupported placeholder.
     """
     safe_title = sanitize_filename(title, fallback=fallback)
     # The template owns the extension, so a page literally titled "report.pdf"
@@ -134,8 +134,8 @@ def resolve_destination(
 
     Three shapes are supported, checked in order:
 
-    1. A name containing ``{title}``, which is filled in from the page title.
-    2. An existing directory, which receives ``<title>.pdf``.
+    1. A name containing `{title}`, which is filled in from the page title.
+    2. An existing directory, which receives `<title>.pdf`.
     3. Anything else, treated as the literal file name.
 
     Args:
@@ -144,7 +144,7 @@ def resolve_destination(
         fallback: Stem to use when the title sanitises down to nothing.
 
     Returns:
-        The path to write, always ending in ``.pdf``.
+        The path to write, always ending in `.pdf`.
     """
     path = Path(dest)
 
@@ -157,7 +157,7 @@ def resolve_destination(
 
 
 def deduplicate(name: str, taken: Container[str]) -> str:
-    """Return ``name``, or a numbered variant that is not already in ``taken``.
+    """Return `name`, or a numbered variant that is not already in `taken`.
 
     Two different pages routinely share a title; without this they would
     silently overwrite each other.
@@ -167,7 +167,7 @@ def deduplicate(name: str, taken: Container[str]) -> str:
         taken: Names already in use.
 
     Returns:
-        ``name`` if free, otherwise ``"name (2).pdf"``, ``"name (3).pdf"``, ...
+        `name` if free, otherwise `"name (2).pdf"`, `"name (3).pdf"`, ...
     """
     if name not in taken:
         return name

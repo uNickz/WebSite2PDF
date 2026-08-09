@@ -18,7 +18,7 @@ website2pdf https://example.com -o example.pdf
 ## What it gives you
 
 - **One call per job.** `convert()` returns `bytes` when you omit the
-  destination and a `Path` when you give one — decided by typed overloads, so
+  destination and a `Path` when you give one, decided by typed overloads, so
   your editor and type checker both know which.
 - **Concurrency that is real.** `AsyncClient` is asyncio-native and renders
   several pages at once in independent browser contexts sharing one browser
@@ -33,14 +33,14 @@ website2pdf https://example.com -o example.pdf
 
 <div class="grid cards" markdown>
 
-- **[Installation](installation.md)** — including the browser download step that
+- **[Installation](installation.md)**: including the browser download step that
   is easy to miss.
-- **[User guide](guide.md)** — single pages, batches, waiting for content,
+- **[User guide](guide.md)**: single pages, batches, waiting for content,
   cookies and headers.
-- **[Command line](cli.md)** — every flag, with examples.
-- **[Options reference](options.md)** — every field of every option object.
-- **[Migrating from 0.x](migration.md)** — what changed and how to translate it.
-- **[API reference](api.md)** — generated from the source.
+- **[Command line](cli.md)**: every flag, with examples.
+- **[Options reference](options.md)**: every field of every option object.
+- **[Migrating from 0.x](migration.md)**: what changed and how to translate it.
+- **[API reference](api.md)**: generated from the source.
 
 </div>
 

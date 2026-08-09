@@ -63,7 +63,7 @@ class TestSanitizeFilename:
         assert result == "x" * 20 + ".pdf"
 
     def test_keeps_non_ascii_characters(self):
-        assert sanitize_filename("relazione annuale — città") == "relazione annuale — città"
+        assert sanitize_filename("relazione annuale - città") == "relazione annuale - città"
 
 
 class TestEnsurePdfSuffix:

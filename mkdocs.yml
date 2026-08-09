@@ -38,6 +38,14 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
 
+# mkdocs serve only watches docs_dir and this file by default, so editing a
+# docstring would not refresh the API reference without these.
+watch:
+  - src
+  - README.md
+  - CHANGELOG.md
+  - CONTRIBUTING.md
+
 plugins:
   - search
   - mkdocstrings:
@@ -62,6 +70,9 @@ plugins:
 markdown_extensions:
   - admonition
   - attr_list
+  # Required for the card grid on the home page: without it the Markdown inside
+  # a <div markdown> block is emitted verbatim.
+  - md_in_html
   - tables
   - toc:
       permalink: true

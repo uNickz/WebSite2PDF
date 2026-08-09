@@ -1,6 +1,6 @@
 """Asynchronous client for converting pages to PDF.
 
-Mirrors :class:`website2pdf.Client`, but renders several pages concurrently in
+Mirrors [`Client`][website2pdf.Client], but renders several pages concurrently in
 independent browser contexts sharing a single browser process.
 """
 
@@ -37,10 +37,12 @@ DEFAULT_CONCURRENCY = 4
 class AsyncClient:
     """Convert web pages and local HTML files to PDF, concurrently.
 
-    Use it as an async context manager so the browser is always torn down::
+    Use it as an async context manager so the browser is always torn down:
 
-        async with AsyncClient() as client:
-            pdfs = await client.convert_many(urls)
+    ```python
+    async with AsyncClient() as client:
+        pdfs = await client.convert_many(urls)
+    ```
 
     Concurrency is a property of the client rather than of a single call,
     because it caps how many browser contexts exist at once.
@@ -63,7 +65,7 @@ class AsyncClient:
             concurrency: Maximum number of pages rendered at the same time.
 
         Raises:
-            OptionsError: If ``concurrency`` is below one.
+            OptionsError: If `concurrency` is below one.
         """
         if concurrency < 1:
             message = f"concurrency must be at least 1, got {concurrency}"
@@ -161,18 +163,18 @@ class AsyncClient:
         """Render a single page to PDF.
 
         Args:
-            target: URL, ``file://`` URL, or path to a local HTML file.
+            target: URL, `file://` URL, or path to a local HTML file.
             dest: Where to write the PDF. When omitted the PDF is returned as
-                bytes. May be a file name, a name containing ``{title}``, or an
+                bytes. May be a file name, a name containing `{title}`, or an
                 existing directory.
             pdf_options: Overrides this client's PDF options for this call.
             render_options: Overrides this client's render options for this call.
 
         Returns:
-            The PDF bytes when ``dest`` is omitted, otherwise the path written.
+            The PDF bytes when `dest` is omitted, otherwise the path written.
 
         Raises:
-            InvalidTargetError: If ``target`` is not a usable URL or file.
+            InvalidTargetError: If `target` is not a usable URL or file.
             NavigationError: If the page could not be loaded.
             RenderError: If the page could not be printed.
         """
@@ -216,24 +218,24 @@ class AsyncClient:
         pdf_options: PdfOptions | None = None,
         render_options: RenderOptions | None = None,
     ) -> list[bytes] | list[Path]:
-        """Render several pages to PDF, up to ``concurrency`` at a time.
+        """Render several pages to PDF, up to `concurrency` at a time.
 
         All pages are rendered before any file is written, so file names are
         assigned in input order and stay reproducible across runs. Pages that
         share a title do not overwrite each other; the second and later files
-        gain a ``" (2)"`` suffix.
+        gain a `" (2)"` suffix.
 
         Args:
             targets: URLs or local HTML files.
             dest_dir: Directory to write into. Created if missing. When omitted
                 the PDFs are returned as bytes.
-            filename_template: Name template for each file. ``{title}`` is the
+            filename_template: Name template for each file. `{title}` is the
                 only supported placeholder.
             pdf_options: Overrides this client's PDF options for this call.
             render_options: Overrides this client's render options for this call.
 
         Returns:
-            A list of PDF bytes when ``dest_dir`` is omitted, otherwise the list
+            A list of PDF bytes when `dest_dir` is omitted, otherwise the list
             of paths written, in input order.
         """
         await self.start()
@@ -287,11 +289,11 @@ class AsyncClient:
 
         Args:
             target: URL or local HTML file.
-            pdf_options: PDF options for this call, or ``None`` for the default.
-            render_options: Render options for this call, or ``None`` for the default.
+            pdf_options: PDF options for this call, or `None` for the default.
+            render_options: Render options for this call, or `None` for the default.
 
         Returns:
-            A ``(pdf_bytes, page_title)`` pair.
+            A `(pdf_bytes, page_title)` pair.
 
         Raises:
             NavigationError: If the page could not be loaded.

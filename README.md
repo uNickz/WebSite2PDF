@@ -44,7 +44,7 @@ with Client() as client:
 pip install website2pdf
 ```
 
-Then download the browser Playwright manages. **This step is required** — the
+Then download the browser Playwright manages. **This step is required**, the
 library has nothing to render with until it has run:
 
 ```bash
@@ -194,7 +194,7 @@ except WebSite2PDFError:
 `Client` runs Playwright's synchronous driver on the calling thread, which
 means `asyncio.run()` cannot start on that thread while a client is open. In an
 asyncio program, use `AsyncClient`. Several `Client` instances on one thread are
-fine — they share one reference-counted driver.
+fine, they share one reference-counted driver.
 
 PDF rendering is Chromium-only: it is the only engine that exposes a print-to-PDF
 command.
@@ -217,7 +217,7 @@ carries over unchanged.
 | Firefox fallback | removed; Chromium only |
 
 `Client` is now a context manager, and `convert()` returns `bytes` when you omit
-the destination and a `Path` when you give one — never a union of four types.
+the destination and a `Path` when you give one, never a union of four types.
 The [migration
 guide](https://unickz.github.io/WebSite2PDF/migration/) walks through it.
 

@@ -1,7 +1,7 @@
-"""Exception hierarchy raised by :mod:`website2pdf`.
+"""Exception hierarchy raised by `website2pdf`.
 
-Every exception derives from :class:`WebSite2PDFError`, so callers can catch the
-whole library with a single ``except`` clause.
+Every exception derives from `WebSite2PDFError`, so callers can catch the
+whole library with a single `except` clause.
 """
 
 from __future__ import annotations

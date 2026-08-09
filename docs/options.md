@@ -68,7 +68,7 @@ PdfOptions(
 
 Templates are rendered outside the page's own styles, so they start unstyled and
 at a very small default size. Set `font-size` explicitly, and leave room with
-`margin` — a header with no top margin has nowhere to appear.
+`margin`, a header with no top margin has nowhere to appear.
 
 ## Margin
 

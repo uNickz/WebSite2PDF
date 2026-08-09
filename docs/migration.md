@@ -2,7 +2,7 @@
 
 Version 1.0 is a rewrite. The import name changed, the API changed, and Selenium
 was replaced by Playwright. No 0.x code runs unchanged, and there is no
-compatibility shim — a shim would have kept the parts that were broken.
+compatibility shim, a shim would have kept the parts that were broken.
 
 Nothing forces you to upgrade: 0.1.3 stays on PyPI under the licence it was
 published with.
@@ -58,7 +58,7 @@ each release, so there is nothing to match against a system browser.
 In 0.x a client could only be used once: `stop_client()` called `quit()` but left
 its handle in place, so the next conversion raised `ClientAlreadyStarted`. Both
 `start()` and `close()` are idempotent now, and `ClientAlreadyStarted` and
-`ClientAlreadyStopped` no longer exist — they were symptoms of that bug rather
+`ClientAlreadyStopped` no longer exist, they were symptoms of that bug rather
 than conditions worth reporting.
 
 ## Return types
@@ -177,7 +177,7 @@ RenderOptions(extra_wait=3000)  # a fixed 3 seconds, if you must
 ## Cookies
 
 0.x passed cookies to the driver before navigating, which the underlying API
-rejects — cookies can only be set once you are on the target domain. They now go
+rejects, cookies can only be set once you are on the target domain. They now go
 on the browser context, where before navigation is the correct time:
 
 ```python
@@ -202,8 +202,8 @@ Removed. Only Chromium exposes a print-to-PDF command; Playwright's `page.pdf()`
 raises on other engines.
 
 In practice nothing is lost. The 0.x Firefox path printed to a printer named
-`"Microsoft Print to PDF"` — a Windows-only device that the project's own Linux
-CI could never have had — and then waited for a file to appear in an unbounded
+`"Microsoft Print to PDF"` (a Windows-only device that the project's own Linux
+CI could never have had) and then waited for a file to appear in an unbounded
 loop with no timeout.
 
 ## What you gain
