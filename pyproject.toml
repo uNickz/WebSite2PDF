@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling>=1.27"]
+requires = ["hatchling>=1.31.0"]
 build-backend = "hatchling.build"
 
 # ---------------------------------------------------------------------------
@@ -63,7 +63,7 @@ dev = [
 ]
 docs = [
     "mkdocs-material>=9.5",
-    "mkdocstrings[python]>=0.26",
+    "mkdocstrings[python]>=1.0.6",
 ]
 
 # ---------------------------------------------------------------------------
