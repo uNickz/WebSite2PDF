@@ -13,6 +13,9 @@ theme:
   name: material
   custom_dir: docs/overrides
   language: en
+  # The header sits on the indigo primary, so it gets the single-colour cut.
+  logo: assets/logo-mono.svg
+  favicon: assets/logo.svg
   icon:
     repo: fontawesome/brands/github
   features:

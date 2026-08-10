@@ -1,6 +1,9 @@
 <p align="center">
     <a href="https://github.com/uNickz/WebSite2PDF">
-        <img src="https://raw.githubusercontent.com/uNickz/WebSite2PDF/main/.github/graphics/GitHub-Banner-WebSite2PDF.png" width="500px" alt="WebSite2PDF">
+        <picture>
+            <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/uNickz/WebSite2PDF/main/.github/graphics/GitHub-Banner-WebSite2PDF-Light.png">
+            <img src="https://raw.githubusercontent.com/uNickz/WebSite2PDF/main/.github/graphics/GitHub-Banner-WebSite2PDF.png" width="500px" alt="WebSite2PDF">
+        </picture>
     </a>
 </p>
 

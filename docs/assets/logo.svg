@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="WebSite2PDF">
+  <title>WebSite2PDF</title>
+  <!-- Body: a browser window. The bottom-right corner is cut away for the fold. -->
+  <path fill="#6870F8" d="M264 144h496a72 72 0 0 1 72 72v416L584 880H264a72 72 0 0 1-72-72V216a72 72 0 0 1 72-72Z"/>
+  <!-- Window chrome, a shade deeper so the silhouette survives on a light page. -->
+  <path fill="#3C3FA8" d="M264 144h496a72 72 0 0 1 72 72v56H192v-56a72 72 0 0 1 72-72Z"/>
+  <g fill="#FFFFFF" opacity=".85">
+    <circle cx="268" cy="208" r="22"/>
+    <circle cx="344" cy="208" r="22"/>
+    <circle cx="420" cy="208" r="22"/>
+  </g>
+  <!-- The folded corner: the cut triangle, filled, squaring the silhouette back up. -->
+  <path fill="#F07860" d="M832 632v176a72 72 0 0 1-72 72H584Z"/>
+</svg>
