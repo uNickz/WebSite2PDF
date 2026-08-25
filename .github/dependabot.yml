@@ -20,3 +20,13 @@ updates:
         dependency-type: development
     commit-message:
       prefix: "build"
+
+  - package-ecosystem: pre-commit
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      hooks:
+        patterns: ["*"]
+    commit-message:
+      prefix: "build"
